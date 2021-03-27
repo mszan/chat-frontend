@@ -1,0 +1,14 @@
+@import '../../../scss/variables.scss';
+
+.wrapper {
+  height: 100vh;
+  text-align: center;
+
+  .title {
+    color: $color-rausch;
+  }
+
+  .subtitle {
+    color: $color-foggy;
+  }
+}

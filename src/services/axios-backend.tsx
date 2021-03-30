@@ -25,7 +25,7 @@ export const authResponseToAuthTokens = (res: IAuthResponse): IAuthTokens => ({
 // Define token refresh function.
 const requestRefresh: TokenRefreshRequest = async (refreshToken: string): Promise<string> => {
     // Perform refresh.
-    return (await axios.post(refreshEndpoint, { refresh: refreshToken })).data.access_token
+    return (await axios.post(refreshEndpoint, { refresh: refreshToken })).data.access
 }
 
 // Add interceptor to your axios instance.

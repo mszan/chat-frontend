@@ -2,38 +2,4 @@
 
 .wrapper {
   min-height: 100vh!important;
-
-  .header {
-    //height: 55px;
-    padding: 0;
-
-    .sidebarToggleBtn {
-      color: #A7ADB4;
-      font-size: 20px;
-      transition: color 0.15s cubic-bezier(0.645, 0.045, 0.355, 1);
-      padding: 22px;
-
-      &:hover {
-        color: #FFF;
-      }
-    }
-
-    .headerUserText {
-      color: $color-rausch;
-      font-size: 15px;
-    }
-
-    .headerUserLogoutIcon {
-      color: $color-rausch;
-      font-size: 20px;
-      margin: 0 5px;
-      padding: 21px;
-    }
-  }
-
-  .logo {
-    color: #FFF;
-    text-align: center;
-    padding: 19px
-  }
 }

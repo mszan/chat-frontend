@@ -1,0 +1,28 @@
+@import '../../../../scss/variables.scss';
+
+.wrapper {
+  padding: 0!important;
+
+  .sidebarToggleBtn {
+    color: #A7ADB4;
+    font-size: 20px;
+    transition: color 0.15s cubic-bezier(0.645, 0.045, 0.355, 1);
+    padding: 22px;
+
+    &:hover {
+      color: #FFF;
+    }
+  }
+
+  .userText {
+    color: $color-rausch;
+    font-size: 15px;
+  }
+
+  .logoutBtn {
+    color: $color-rausch;
+    font-size: 20px;
+    margin: 0 5px;
+    padding: 21px;
+  }
+}

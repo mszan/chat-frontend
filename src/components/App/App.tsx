@@ -44,7 +44,7 @@ interface IRouteWrapper {
     component: React.ComponentType, // Component to be wrapped.
     title: string,                  // Component title.
     loginRequired: boolean,         // If true, access is only for authenticated users.
-    navKey: number,                 // Sidebar index.
+    navKey: number,                 // ChatSider index.
     exact: boolean,                 // Route path exact.
     path: string,                   // Route path.
 }

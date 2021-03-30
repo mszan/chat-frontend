@@ -1,21 +1,31 @@
 import React, {useState} from 'react';
-import {Layout, Menu} from 'antd';
+import {Col, Layout, Menu, message, Row, Typography} from 'antd';
 import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
+    PoweroffOutlined,
     UploadOutlined,
     UserOutlined,
-    VideoCameraOutlined,
+    VideoCameraOutlined
 } from '@ant-design/icons';
 import classes from './Chat.module.scss';
-import {Link} from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
+import {logout} from '../../../services/auth';
+
+const { Text } = Typography;
 
 const { Header, Sider, Content } = Layout;
 
 type Props = {}
 
 const Chat: React.FC<Props> = () => {
+    // Sidebar collapse state.
+    //  True - sidebar collapsed (desktop) / hidden (mobile).
+    //  False - visible.
     const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(false)
+
+    // Used to redirect user to login page after getting logged out.
+    let history = useHistory();
 
     return (
         <Layout className={classes.wrapper}>
@@ -25,12 +35,12 @@ const Chat: React.FC<Props> = () => {
                 collapsed={sidebarCollapsed}
                 collapsedWidth={window.innerWidth < 400 ? 0 : 80}
             >
+                <div key="siderLogo" className={classes.logo}>
+                    <Link to="">
+                        LOGO
+                    </Link>
+                </div>
                 <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-                    <div key="siderLogo">
-                        <Link to="">
-                            LOGO
-                        </Link>
-                    </div>
                     <Menu.Item key="1" icon={<UserOutlined />}>
                         nav 1
                     </Menu.Item>
@@ -44,13 +54,27 @@ const Chat: React.FC<Props> = () => {
             </Sider>
             <Layout>
                 <Header className={classes.header}>
-                    {React.createElement(sidebarCollapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-                        className: classes.toggleBtn,
-                        onClick: () => setSidebarCollapsed(!sidebarCollapsed),
-                    })}
+                    <Row justify="space-between">
+                        <Col>
+                            {React.createElement(sidebarCollapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+                                className: classes.sidebarToggleBtn,
+                                onClick: () => setSidebarCollapsed(!sidebarCollapsed),
+                            })}
+                        </Col>
+                        <Col>
+                            <Text className={classes.headerUserText}>filltheusername</Text>
+                            <PoweroffOutlined
+                                className={classes.headerUserLogoutIcon}
+                                onClick={() => {
+                                    logout() // Logout user.
+                                    history.push('')    // Redirect to login page.
+                                    message.success('Bye bye!')
+                                }}
+                            />
+                        </Col>
+                    </Row>
                 </Header>
                 <Content
-                    // className={classes.content}
                     style={{
                         margin: '24px 16px',
                         padding: 24,

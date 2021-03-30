@@ -1,4 +1,4 @@
-import { isLoggedIn, setAuthTokens, clearAuthTokens, getAccessToken, getRefreshToken } from 'axios-jwt'
+import {clearAuthTokens, getAccessToken, getRefreshToken, isLoggedIn, setAuthTokens} from 'axios-jwt';
 import axiosBackend, {authResponseToAuthTokens, IAuthResponse} from './axios-backend';
 
 interface ILoginRequest {

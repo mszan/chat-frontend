@@ -1,8 +1,8 @@
-import {Form, Input, Button, Checkbox, message} from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import {Button, Checkbox, Form, Input, message} from 'antd';
+import {LockOutlined, UserOutlined} from '@ant-design/icons';
 import React, {useState} from 'react';
 import {login} from '../../../../services/auth';
-import { useHistory } from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 
 type Props = {}
 
@@ -11,11 +11,6 @@ const LoginForm: React.FC<Props> = () => {
     const [buttonLoading, setButtonLoading] = useState<boolean>(false);
 
     let history = useHistory();
-    // Handle redirect on form submit.
-    const handleSearchSubmit = (e: React.FormEvent) => {
-        history.push('/chat'); // Load results page.
-    };
-
     // Handles login form onFinish.
     const onFinish = (values: any) => {
         // Tell user he's being logged in.
@@ -28,12 +23,12 @@ const LoginForm: React.FC<Props> = () => {
         })
             // If login succeeded.
             .then(() => {
-                message.success('Successfully logged in.');
+                message.success('You are logged in now.');
                 history.push('/chat'); // Redirect to protected chat app.
             })
             // If login failed.
             .catch(e => {
-                message.error('Something went wrong.'); // Display message to user.
+                message.error('Something went wrong, try again.'); // Display message to user.
 
                 // To prevent multiple login attempts, enable button after certain time.
                 setTimeout(() => setButtonLoading(false), 1000);

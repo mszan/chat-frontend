@@ -1,5 +1,5 @@
-import axios from "axios";
-import { IAuthTokens, TokenRefreshRequest, useAuthTokenInterceptor as authTokenInterceptor } from 'axios-jwt';
+import axios from 'axios';
+import {IAuthTokens, TokenRefreshRequest, useAuthTokenInterceptor as authTokenInterceptor} from 'axios-jwt';
 
 // Axios instance dedicated for backend API.
 const axiosBackend = axios.create({

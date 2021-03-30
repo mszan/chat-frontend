@@ -1,17 +1,14 @@
 import React from 'react';
 import Landing from './Landing/Landing';
-import {Helmet} from "react-helmet";
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-} from "react-router-dom";
+import {Helmet} from 'react-helmet';
+import {BrowserRouter as Router, Route, Switch, useHistory, useLocation} from 'react-router-dom';
 import Chat from './Chat/Chat';
 import {isLoggedIn} from 'axios-jwt';
-import { Result } from 'antd';
+import {message} from 'antd';
 
 type Props = {}
 
+// Main component.
 const App: React.FC<Props> = () => (
     <React.Fragment>
         {/*React helmet.*/}
@@ -55,27 +52,26 @@ interface IRouteWrapper {
 // Route wrapper component.
 // Used to determinate access to authenticated-only pages.
 const RouteWrapper: React.FC<IRouteWrapper> = ({component: Component, title, loginRequired, navKey}) => {
+    let history = useHistory();
+    let location = useLocation();
+
     // Get layout's inner component depending on logged user.
     const getComponent = () => {
-        if (loginRequired) {
-            if (isLoggedIn()) {
-                return <Component  />
-            } else {
-                return (
-                    <Result
-                        title=""
-                        subTitle="You need to be logged in to view this page."
-                    />
-                )
+        if (loginRequired) {    // If page is protected (login is required to view this page).
+            if (isLoggedIn()) { return <Component  /> } // If user is logged in, return protected component.
+            else {
+                const previousPage = location.pathname;
+                history.push('')  // Redirect to login page.
+                message.error({
+                    content: <span>You need to be logged in to access <strong>{previousPage}</strong>.</span>,
+                    duration: 10
+                });
             }
-        } else {
-            return <Component />
-        }
+        } else { return <Component /> }
     }
 
-    return (
-        <Route render={() => getComponent()} />
-    );
+    // Return route component.
+    return (<Route render={() => getComponent()} />);
 }
 
 export default App;

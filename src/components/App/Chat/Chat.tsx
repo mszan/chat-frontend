@@ -1,16 +1,14 @@
 import React, {useState} from 'react';
 import {Layout, Menu} from 'antd';
 import {
-    MenuUnfoldOutlined,
     MenuFoldOutlined,
+    MenuUnfoldOutlined,
+    UploadOutlined,
     UserOutlined,
     VideoCameraOutlined,
-    UploadOutlined,
 } from '@ant-design/icons';
-import classes from './Chat.module.scss'
-import Title from 'antd/lib/typography/Title';
-import Text from 'antd/lib/typography/Text';
-import { Link } from 'react-router-dom';
+import classes from './Chat.module.scss';
+import {Link} from 'react-router-dom';
 
 const { Header, Sider, Content } = Layout;
 
@@ -47,7 +45,6 @@ const Chat: React.FC<Props> = () => {
             <Layout>
                 <Header className={classes.header}>
                     {React.createElement(sidebarCollapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-                        // className: 'trigger',
                         className: classes.toggleBtn,
                         onClick: () => setSidebarCollapsed(!sidebarCollapsed),
                     })}

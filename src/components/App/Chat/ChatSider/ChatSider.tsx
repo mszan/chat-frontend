@@ -6,7 +6,7 @@ import {Menu} from 'antd';
 import {MessageOutlined} from '@ant-design/icons';
 import Sider from 'antd/lib/layout/Sider';
 
-
+// Book type matching backend response.
 type IRoom = {
     url: string,
     name: string,
@@ -17,16 +17,27 @@ type IRoom = {
 }
 
 interface Props {
-    sidebarCollapsed: boolean;
+    siderCollapsed:  boolean;
 }
 
-const ChatSider: React.FC<Props> = ({sidebarCollapsed}) => {
+const ChatSider: React.FC<Props> = ({siderCollapsed}) => {
     // List of fetched rooms to be displayed on the sidebar.
-    const [roomList, setRoomList] = useState<Array<IRoom>>([])
+    const [roomList, setRoomList] = useState<Array<IRoom>>([]);
+
+    // Get sider box-shadow style value.
+    const getSiderShadow = () => { return siderCollapsed ? '0 0 17px 0 rgba(0,0,0,0.1)' : '0 0 17px 0 rgba(0,0,0,0.5)';}
+
+    // Sider shadow based on its collapse state.
+    const [siderShadow, setSiderShadow] = useState<string>(getSiderShadow());
+
+    // Only once at page load.
+    useEffect(() => {
+        fetchRooms();
+    }, [])
 
     useEffect(() => {
-        fetchRooms()
-    }, [])
+        setSiderShadow(getSiderShadow());
+    })
 
     // Fetches room list from backend API.
     const fetchRooms = () => {
@@ -34,7 +45,7 @@ const ChatSider: React.FC<Props> = ({sidebarCollapsed}) => {
         axiosBackend.get('/rooms/')
             // If success, update roomList state.
             .then(r => {
-                setRoomList(r.data)
+                setRoomList(r.data);
             })
             // If error, log details to console.
             .catch(e => console.log(e))
@@ -43,7 +54,7 @@ const ChatSider: React.FC<Props> = ({sidebarCollapsed}) => {
     // Returns sidebar room icon.
     // TODO: Will be returning different icon if there are new messages in room.
     const getRoomIcon = () => {
-        return (<MessageOutlined />)
+        return (<MessageOutlined />);
     }
 
     return (
@@ -51,8 +62,9 @@ const ChatSider: React.FC<Props> = ({sidebarCollapsed}) => {
             className={classes.wrapper}
             trigger={null}
             collapsible
-            collapsed={sidebarCollapsed}
+            collapsed={siderCollapsed}
             collapsedWidth={window.innerWidth < 400 ? 0 : 80}
+            style={{boxShadow: siderShadow}}
         >
             <div key="siderLogo" className={classes.logo}>
                 <Link to="">
@@ -69,7 +81,7 @@ const ChatSider: React.FC<Props> = ({sidebarCollapsed}) => {
                 })}
             </Menu>
         </Sider>
-    )
+    );
 }
 
 export default ChatSider;

@@ -8,17 +8,35 @@ import ChatSider from './ChatSider/ChatSider';
 interface Props {}
 
 const Chat: React.FC<Props> = () => {
-    // ChatSider collapse state.
-    //      True - sidebar collapsed (desktop) / hidden (mobile).
-    //      False - visible.
-    const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(false)
+    /**
+     * Get sider collapse state from localStorage.
+     */
+    const getSiderCollapsedLocalStorage = () => {
+        // LocalStorage value.
+        const localStorageVal = localStorage.getItem('siderCollapsed')
+
+        // If localStorage value is present and its value is 'true'.
+        return !!(localStorageVal && localStorageVal == 'true');
+    }
+
+    // State of collapsed sider.
+    const [siderCollapsedState, setSiderCollapseState] = useState<boolean>(getSiderCollapsedLocalStorage())
+
+    /**
+     * Set localStorage and state to negation of previous state (true -> false OR false -> true).
+     */
+    const setSiderCollapsed = () => {
+        const negation = !getSiderCollapsedLocalStorage()   // Boolean.
+        localStorage.setItem('siderCollapsed', String(negation)); // String.
+        setSiderCollapseState(negation);    // Boolean.
+    }
 
 
     return (
         <Layout className={classes.wrapper}>
-            <ChatSider sidebarCollapsed={sidebarCollapsed} />
+            <ChatSider siderCollapsed={siderCollapsedState} />
             <Layout>
-                <ChatHeader sidebarCollapsed={sidebarCollapsed} setSidebarCollapsed={setSidebarCollapsed} />
+                <ChatHeader siderCollapsed={siderCollapsedState} setSiderCollapsed={setSiderCollapsed} />
                 <ChatContent />
             </Layout>
         </Layout>

@@ -26,3 +26,4 @@ yarn-error.log*
 /.idea
 /.idea/inspectionProfiles/Project_Default.xml
 /.idea/vcs.xml
+/.env

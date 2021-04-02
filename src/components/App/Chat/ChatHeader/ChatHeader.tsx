@@ -10,11 +10,11 @@ const { Text } = Typography;
 
 
 interface Props {
-    sidebarCollapsed: boolean;
-    setSidebarCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
+    siderCollapsed: boolean;
+    setSiderCollapsed: () => void;
 }
 
-const ChatHeader: React.FC<Props> = ({sidebarCollapsed, setSidebarCollapsed}) => {
+const ChatHeader: React.FC<Props> = ({siderCollapsed, setSiderCollapsed}) => {
     // Used to redirect user to login page after getting logged out.
     let history = useHistory();
 
@@ -22,9 +22,9 @@ const ChatHeader: React.FC<Props> = ({sidebarCollapsed, setSidebarCollapsed}) =>
         <Header className={classes.wrapper}>
             <Row justify="space-between">
                 <Col>
-                    {React.createElement(sidebarCollapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+                    {React.createElement(siderCollapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
                         className: classes.sidebarToggleBtn,
-                        onClick: () => setSidebarCollapsed(!sidebarCollapsed),
+                        onClick: () => setSiderCollapsed(),
                     })}
                 </Col>
                 <Col>

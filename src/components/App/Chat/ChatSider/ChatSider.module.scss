@@ -1,7 +1,9 @@
+@import '../../../../scss/variables.scss';
+
 .wrapper {
   .logo {
-    color: #FFF;
+    color: $color-rausch!important;
     text-align: center;
-    padding: 19px
+    margin: 17px 0!important;
   }
 }

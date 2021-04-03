@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Layout, Typography} from 'antd';
+import {Layout} from 'antd';
 import classes from './Chat.module.scss';
 import ChatContent from './ChatContent/ChatContent';
 import ChatHeader from './ChatHeader/ChatHeader';

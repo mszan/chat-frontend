@@ -5,7 +5,7 @@ import {MenuFoldOutlined, MenuUnfoldOutlined, PoweroffOutlined} from '@ant-desig
 import {logout} from '../../../../services/auth';
 import {useHistory} from 'react-router-dom';
 
-const { Header, Sider, Content } = Layout;
+const { Header } = Layout;
 const { Text } = Typography;
 
 

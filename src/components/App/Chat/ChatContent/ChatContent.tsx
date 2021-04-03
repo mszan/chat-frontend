@@ -1,5 +1,7 @@
 import React from 'react';
-import {Layout } from 'antd';
+import {Layout} from 'antd';
+import Room from './Room/Room';
+import {Route, Switch} from 'react-router-dom';
 
 const { Content } = Layout;
 
@@ -14,7 +16,20 @@ const ChatContent: React.FC<Props> = () => {
                 minHeight: 280,
             }}
         >
-            Content
+            ChatContent.tsx
+
+            {/*Chat switch.*/}
+            <Switch>
+                {/*Route for creating new room.*/}
+                <Route path={`/chat/rooms/create`}>
+                    Create new room form etc
+                </Route>
+
+                {/*Route for existing rooms.*/}
+                <Route path={`/chat/rooms/:roomId`} key={document.location.href}>
+                    <Room />
+                </Route>
+            </Switch>
         </Content>
     )
 }

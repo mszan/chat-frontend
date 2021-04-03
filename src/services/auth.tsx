@@ -12,10 +12,16 @@ const login = async (params: ILoginRequest) => {
     const res: IAuthResponse = (await axiosBackend.post('/token/', params)).data
     // Save tokens to localStorage.
     setAuthTokens(authResponseToAuthTokens(res))
+
+    // Save username to localStorage.
+    localStorage.setItem('loggedUserUsername', params.username)
 }
 
 // Resets auth tokens.
-const logout = () => clearAuthTokens()
+const logout = () => {
+    clearAuthTokens()
+    localStorage.removeItem('loggedUserUsername')
+}
 
 // Checks if refresh token exists.
 if (isLoggedIn()) {

@@ -13,6 +13,7 @@
     "antd": "^4.14.1",
     "axios-jwt": "^1.4.0",
     "craco-antd": "^1.19.0",
+    "moment": "^2.29.1",
     "node-sass": "^5.0.0",
     "nodemon": "^2.0.7",
     "react": "^17.0.2",

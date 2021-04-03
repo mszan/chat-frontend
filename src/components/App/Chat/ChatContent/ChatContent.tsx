@@ -12,12 +12,10 @@ const ChatContent: React.FC<Props> = () => {
         <Content
             style={{
                 margin: '24px 16px',
-                padding: 24,
+                padding: '0 24px',
                 minHeight: 280,
             }}
         >
-            ChatContent.tsx
-
             {/*Chat switch.*/}
             <Switch>
                 {/*Route for creating new room.*/}

@@ -1,7 +1,5 @@
 import React from 'react';
 import {Avatar, Card, Col, Row, Tooltip} from 'antd';
-import {useHistory} from 'react-router-dom';
-import {UserOutlined} from '@ant-design/icons';
 import moment from 'moment';
 
 // User message type.
@@ -14,22 +12,22 @@ type TMessage = {
 }
 
 interface Props {
-    nextMsg: TMessage | undefined,
+    renderAvatar: boolean,
     msg: TMessage
 }
 
-const Message: React.FC<Props> = ({nextMsg, msg}) => {
+const Message: React.FC<Props> = ({renderAvatar, msg}) => {
     // Return true if message user matches loggedUserUsername localStorage string.
     const isMsgSentByLoggedUser = () => { return msg.user == localStorage.getItem('loggedUserUsername');}
 
-    // Get user avatar (profile picture).
+    // Get user avatar (profile picture) or span placeholder.
     const getAvatar = () => {
-        if (!nextMsg || nextMsg.user != msg.user) {
+        if (renderAvatar) {
             return (
                 <Col>
                     <Tooltip placement="bottom" title={msg.user}>
                         <Avatar size="small" style={{
-                            margin: isMsgSentByLoggedUser() ? '0 0 0 5px' : '0 5px 0 0'
+                            margin: isMsgSentByLoggedUser() ? '0 0 2px 5px' : '0 5px 2px 0'
                         }} >
                             {msg.user[0].toUpperCase()}
                         </Avatar>
@@ -46,7 +44,7 @@ const Message: React.FC<Props> = ({nextMsg, msg}) => {
     }
 
     return (
-        <Row align="bottom">
+        <Row align="bottom" justify={isMsgSentByLoggedUser() ? 'end' : 'start'}>
             {isMsgSentByLoggedUser() ? null : getAvatar()}
             <Col>
                 <Tooltip placement="bottom" title={moment(msg.timestamp).fromNow()} mouseEnterDelay={0.5}>
@@ -63,7 +61,6 @@ const Message: React.FC<Props> = ({nextMsg, msg}) => {
                     >
                         {/*<span>{msg.timestamp}</span>*/}
                         <span>{msg.text}</span>
-                        {console.log(nextMsg, msg)}
                     </Card>
                 </Tooltip>
             </Col>

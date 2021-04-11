@@ -11,6 +11,7 @@
     "@types/node": "^12.20.7",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
+    "@types/websocket": "^1.0.2",
     "antd": "^4.14.1",
     "axios-jwt": "^1.4.0",
     "craco-antd": "^1.19.0",

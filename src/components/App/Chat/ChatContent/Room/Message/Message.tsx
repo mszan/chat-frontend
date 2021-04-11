@@ -4,8 +4,8 @@ import moment from 'moment';
 
 // User message type.
 type TMessage = {
-    id: number,
-    room: string,
+    id?: number,
+    room?: string,
     user: string,
     text: string,
     timestamp: string,
@@ -47,7 +47,7 @@ const Message: React.FC<Props> = ({renderAvatar, msg}) => {
         <Row align="bottom" justify={isMsgSentByLoggedUser() ? 'end' : 'start'}>
             {isMsgSentByLoggedUser() ? null : getAvatar()}
             <Col>
-                <Tooltip placement="bottom" title={moment(msg.timestamp).fromNow()} mouseEnterDelay={0.5}>
+                <Tooltip placement="bottom" title={moment(msg.timestamp).format('hh:mm, MMMM Do')} mouseEnterDelay={0.5}>
                     <Card
                         style={{
                             width: 300,
@@ -70,3 +70,4 @@ const Message: React.FC<Props> = ({renderAvatar, msg}) => {
 }
 
 export default Message;
+export type {TMessage};

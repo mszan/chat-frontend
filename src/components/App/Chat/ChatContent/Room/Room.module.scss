@@ -1,0 +1,19 @@
+@import '../../../../../scss/variables.scss';
+
+.wrapper {
+  position: relative;
+  height: calc(100vh - 120px);
+
+  .footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+
+    .sendBtn {
+      color: $color-rausch;
+      padding: 6px 0 6px 6px;
+      font-size: 20px;
+      transition: color 0.15s cubic-bezier(0.645, 0.045, 0.355, 1);
+    }
+  }
+}

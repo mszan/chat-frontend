@@ -2,18 +2,13 @@ import React, {useEffect, useState} from 'react';
 import {Button, Col, Divider, Empty, Input, message, PageHeader, Row, Spin, Tag} from 'antd';
 import {useHistory, useParams} from 'react-router-dom';
 import axiosBackend from '../../../../../services/axios-backend';
-import Message from './Message/Message';
+import Message, {TMessage} from './Message/Message';
 import Text from 'antd/es/typography/Text';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import {LikeOutlined, SendOutlined} from '@ant-design/icons';
+import classes from './Room.module.scss';
+import moment from 'moment';
 
-// User message type.
-type TMessage = {
-    id: number,
-    room: string,
-    user: string,
-    text: string,
-    timestamp: string,
-}
 
 // Room type.
 type TRoom = {
@@ -31,12 +26,54 @@ interface Props {}
 const Room: React.FC<Props> = () => {
     let history = useHistory();
     let {roomId} = useParams<{roomId: string}>();   // Room ID router parameter.
+
     const [room, setRoom] = useState<TRoom>({} as TRoom)    // Room details (title, messages etc).
 
     const [messages, setMessages] = useState<Array<TMessage>>([] as Array<TMessage>)    // Room messages.
-    const [messagesFetchURL, setMessagesFetchURL] = useState<string>(`/messages?room_id=${roomId}&offset=0`) // API url for messages.
+    const [messagesFetchURL, setMessagesFetchURL] = useState<string>(`/messages?room_id=${roomId}&offset=0&fields=user,text,timestamp`) // API url for messages.
     const [fetchFirstMessagesCompleted, setFetchFirstMessagesCompleted] = useState<boolean>(false)    // First messages fetch status.
     const [hasMoreMessages, setHasMoreMessages] = useState<boolean>(true)    // Is there more messages to fetch.
+
+    const [messageInputValue, setMessageInputValue] = useState<string>('');   // Message input element value.
+    const [roomWebSocket, setRoomWebSocket] = useState<undefined | WebSocket>(undefined);   // Websocket instance.
+
+
+    // Websocket operations to be called after room fetch.
+    const runRoomWebSocket = (roomId: number) => {
+        const tempWebSocket = new WebSocket(`ws://localhost:8000/ws/${roomId}/`);   // Create new instance.
+
+        tempWebSocket.onclose = () => {console.error('Chat socket closed unexpectedly')};   // Handles closing WS connection.
+
+        tempWebSocket.onmessage = e => {    // Handles receiving new messages.
+            const data = JSON.parse(e.data);        // Parses message data.
+            const username = data.username          // Username.
+            const text = data.message;              // Message content.
+
+            console.log(messages);
+
+            const newMsg: TMessage = {
+                'user': username,
+                'text': text,
+                'timestamp': moment().format()
+            }
+
+            setMessages(messages => [newMsg, ...messages]) // Append new message to state.
+        }
+
+        setRoomWebSocket(tempWebSocket);   // New websocket instance.
+    }
+
+    // Sends message to websocket.
+    const sendMessage = (event: React.FormEvent<EventTarget>) => {
+        event.preventDefault(); // Prevent page reload on form submit.
+
+        roomWebSocket?.send(JSON.stringify({
+            'username': localStorage.getItem('loggedUserUsername'),
+            'message': messageInputValue
+        }))
+
+        setMessageInputValue('');
+    }
 
     // Fetches specific room details from API.
     const fetchRoom = () => {
@@ -45,6 +82,7 @@ const Room: React.FC<Props> = () => {
             // If success, update roomList state.
             .then(r => {
                 setRoom(r.data);    // Room details.
+                runRoomWebSocket(r.data.id); // Perform operations to set websocket.
             })
             // If error, log details to console.
             .catch(e => {
@@ -96,7 +134,7 @@ const Room: React.FC<Props> = () => {
     }, [])
 
     return (
-        <div style={{position: 'relative', height: 'calc(100vh - 120px)'}}>
+        <div className={classes.wrapper}>
             <Row>
                 <Col style={{width: '100%'}}>
                     <PageHeader
@@ -136,7 +174,7 @@ const Room: React.FC<Props> = () => {
 
                         >
                             {messages && messages.length > 0 ?
-                                messages.map((msg, index, array) => {
+                                messages.map((msg) => {
                                     return (
                                         <Message
                                             msg={msg}
@@ -160,12 +198,28 @@ const Room: React.FC<Props> = () => {
                     </div>
                 </Col>
             </Row>
-            <Row style={{position: 'absolute', bottom: 0, width: '100%'}}>
+            <Row>
                 <Col span={24}>
                     <Divider />
-                    <Input placeholder="Basic usage" />
                 </Col>
             </Row>
+            <form onSubmit={sendMessage}>
+                <Row className={classes.footer}>
+                    <Col flex="auto">
+                        <Input
+                            style={{width: '100%'}} placeholder="Type a message..."
+                            onChange={event => setMessageInputValue(event.target.value)}
+                            value={messageInputValue}
+                        />
+                    </Col>
+                    <Col flex="26px">
+                        {React.createElement(messageInputValue == '' ? LikeOutlined : SendOutlined, {
+                            className: classes.sendBtn,
+                            onClick: () => console.log("btnClicked"),
+                        })}
+                    </Col>
+                </Row>
+            </form>
         </div>
     )
 }

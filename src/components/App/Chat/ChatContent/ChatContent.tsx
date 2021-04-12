@@ -2,6 +2,7 @@ import React from 'react';
 import {Layout} from 'antd';
 import Room from './Room/Room';
 import {Route, Switch} from 'react-router-dom';
+import CreateRoom from './CreateRoom/CreateRoom';
 
 const { Content } = Layout;
 
@@ -20,7 +21,7 @@ const ChatContent: React.FC<Props> = () => {
             <Switch>
                 {/*Route for creating new room.*/}
                 <Route path={`/chat/rooms/create`}>
-                    Create new room form etc
+                    <CreateRoom />
                 </Route>
 
                 {/*Route for existing rooms.*/}

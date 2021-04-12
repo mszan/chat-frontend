@@ -86,10 +86,11 @@ const ChatSider: React.FC<Props> = ({siderCollapsed}) => {
                     icon={
                         <Avatar
                             style={{
-                                lineHeight: '32px',
-                                backgroundColor: '#fa898b'
+                                fontSize: '20px',
+                                lineHeight: '31px',
+                                backgroundColor: '#fa898b',
                             }}
-                        >F</Avatar>
+                        >+</Avatar>
                     }
                     style={{paddingLeft: '24px'}}
                 >

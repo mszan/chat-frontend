@@ -1,23 +1,15 @@
 import React from 'react';
-import {Button, Col, Divider, PageHeader, Row, Tag} from 'antd';
+import {Col, Divider, PageHeader, Row} from 'antd';
 import classes from './CreateRoom.module.scss';
 import CreateRoomForm from './CreateRoomForm/CreateRoomForm';
+import {IRoomOnSider} from '../../Chat';
 
-
-// Room type.
-type TRoom = {
-    id: number,
-    url: string,
-    name: string,
-    active: boolean,
-    creator: string,
-    admins: string[],
-    users: string[],
+interface Props {
+    roomList: IRoomOnSider[]
+    setRoomList: React.Dispatch<React.SetStateAction<IRoomOnSider[]>>
 }
 
-interface Props {}
-
-const CreateRoom: React.FC<Props> = () => {
+const CreateRoom: React.FC<Props> = ({roomList, setRoomList}) => {
     return (
         <div className={classes.wrapper}>
             <Row>
@@ -31,7 +23,7 @@ const CreateRoom: React.FC<Props> = () => {
             </Row>
             <Row>
                 <Col xs={18} sm={12} md={8} lg={6}>
-                    <CreateRoomForm />
+                    <CreateRoomForm roomList={roomList} setRoomList={setRoomList}/>
                 </Col>
             </Row>
         </div>

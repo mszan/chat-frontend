@@ -3,12 +3,16 @@ import {Layout} from 'antd';
 import Room from './Room/Room';
 import {Route, Switch} from 'react-router-dom';
 import CreateRoom from './CreateRoom/CreateRoom';
+import {IRoomOnSider} from '../Chat';
 
 const { Content } = Layout;
 
-interface Props {}
+interface Props {
+    roomList: IRoomOnSider[]
+    setRoomList: React.Dispatch<React.SetStateAction<IRoomOnSider[]>>
+}
 
-const ChatContent: React.FC<Props> = () => {
+const ChatContent: React.FC<Props> = ({roomList, setRoomList}) => {
     return (
         <Content
             style={{
@@ -21,7 +25,7 @@ const ChatContent: React.FC<Props> = () => {
             <Switch>
                 {/*Route for creating new room.*/}
                 <Route path={`/chat/rooms/create`}>
-                    <CreateRoom />
+                    <CreateRoom roomList={roomList} setRoomList={setRoomList} />
                 </Route>
 
                 {/*Route for existing rooms.*/}

@@ -10,8 +10,8 @@ import classes from './Room.module.scss';
 import moment from 'moment';
 
 
-// Room type.
-type TRoom = {
+// Room.
+export type TRoom = {
     id: number,
     url: string,
     name: string,
@@ -105,9 +105,9 @@ const Room: React.FC<Props> = () => {
             // If success, update messages state.
             .then(r => {
                 // Map messages (or add new messages) to state.
-                r.data.results.map((newMsg: TMessage) => {
-                    setMessages(messages => [...messages, newMsg]);
-                })
+                r.data.results.map((newMsg: TMessage) => (
+                    setMessages(messages => [...messages, newMsg])
+                ));
 
                 // If there is no previous link, it means this is first fetch.
                 if (!r.data.previous) { setFetchFirstMessagesCompleted(true); }
@@ -131,7 +131,7 @@ const Room: React.FC<Props> = () => {
     useEffect(() => {
         fetchRoom();
         fetchMessages();
-    }, [])
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <div className={classes.wrapper}>
@@ -213,7 +213,7 @@ const Room: React.FC<Props> = () => {
                         />
                     </Col>
                     <Col flex="26px">
-                        {React.createElement(messageInputValue == '' ? LikeOutlined : SendOutlined, {
+                        {React.createElement(messageInputValue === '' ? LikeOutlined : SendOutlined, {
                             className: classes.sendBtn,
                             onClick: () => console.log("btnClicked"),
                         })}

@@ -2,7 +2,7 @@ import React from 'react';
 import {Avatar, Card, Col, Row, Tooltip} from 'antd';
 import moment from 'moment';
 
-// User message type.
+// Chat message.
 type TMessage = {
     id?: number,
     room?: string,
@@ -18,7 +18,7 @@ interface Props {
 
 const Message: React.FC<Props> = ({renderAvatar, msg}) => {
     // Return true if message user matches loggedUserUsername localStorage string.
-    const isMsgSentByLoggedUser = () => { return msg.user == localStorage.getItem('loggedUserUsername');}
+    const isMsgSentByLoggedUser = () => { return msg.user === localStorage.getItem('loggedUserUsername');}
 
     // Get user avatar (profile picture) or span placeholder.
     const getAvatar = () => {

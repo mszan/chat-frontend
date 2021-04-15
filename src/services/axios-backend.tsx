@@ -31,4 +31,7 @@ const requestRefresh: TokenRefreshRequest = async (refreshToken: string): Promis
 // Add interceptor to your axios instance.
 authTokenInterceptor(axiosBackend, { requestRefresh })
 
+// Add content-type header because DRF API requires it to be specified.
+axiosBackend.defaults.headers.post['content-type'] = 'application/json'
+
 export default axiosBackend;

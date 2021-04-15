@@ -1,0 +1,33 @@
+import React from 'react';
+import {Col, Divider, PageHeader, Row} from 'antd';
+import classes from './CreateRoom.module.scss';
+import CreateRoomForm from './CreateRoomForm/CreateRoomForm';
+import {IRoomOnSider} from '../../Chat';
+
+interface Props {
+    roomList: IRoomOnSider[]
+    setRoomList: React.Dispatch<React.SetStateAction<IRoomOnSider[]>>
+}
+
+const CreateRoom: React.FC<Props> = ({roomList, setRoomList}) => {
+    return (
+        <div className={classes.wrapper}>
+            <Row>
+                <Col style={{width: '100%'}}>
+                    <PageHeader
+                        style={{padding: 0}}
+                        title="Create new room"
+                    />
+                    <Divider />
+                </Col>
+            </Row>
+            <Row>
+                <Col xs={18} sm={12} md={8} lg={6}>
+                    <CreateRoomForm roomList={roomList} setRoomList={setRoomList}/>
+                </Col>
+            </Row>
+        </div>
+    )
+}
+
+export default CreateRoom;

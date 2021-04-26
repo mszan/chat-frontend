@@ -1,0 +1,43 @@
+@import '../../../../scss/variables.scss';
+
+.wrapper {
+  @mixin anim($i) {
+    $y: ($i + 5) * 1;
+
+    @keyframes right-#{$i} {
+      0% {
+        transform: translateY(#{-$y}px) scaleY(#{($y / 10) + 0.8});
+      }
+      100% {
+        transform: translateY(#{$y}px) scaleY(1);
+      }
+    }
+  }
+
+  .bars {
+    transform: translate(-6px, 23px);
+
+    .bar {
+      width: 6px;
+      height: 20px;
+      margin: 4px;
+      border-radius: 10px;
+      list-style-type: none;
+      transition: 0.5s all ease;
+      background-color: $color-rausch;
+    }
+
+    @for $i from 1 through 3 {
+      .bar:nth-child(#{$i}) {
+        @include anim($i);
+        animation: right-#{$i} 3s infinite alternate;
+        animation-delay: 500ms * $i;
+      }
+    }
+  }
+
+  .icon {
+    color: $color-rausch;
+    font-size: 32px;
+  }
+}

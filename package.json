@@ -1,5 +1,6 @@
 {
   "name": "chat-frontend",
+  "homepage": "http://chat.mszanowski.pl",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

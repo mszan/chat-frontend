@@ -40,7 +40,7 @@ const Room: React.FC<Props> = () => {
 
     // Websocket operations to be called after room fetch.
     const runRoomWebSocket = (roomId: number) => {
-        const tempWebSocket = new WebSocket(`ws://localhost:8000/ws/${roomId}/`);   // Create new instance.
+        const tempWebSocket = new WebSocket(`${process.env.REACT_APP_BACKEND_WEBSOCKET_URL}${roomId}/`);   // Create new instance.
 
         tempWebSocket.onclose = () => {console.error('Chat socket closed unexpectedly')};   // Handles closing WS connection.
 

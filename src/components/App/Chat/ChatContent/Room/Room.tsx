@@ -8,6 +8,8 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import {LikeOutlined, SendOutlined} from '@ant-design/icons';
 import classes from './Room.module.scss';
 import moment from 'moment';
+import Settings from './Settings/Settings';
+import Invites from './Invites/Invites';
 
 
 // Room.
@@ -33,6 +35,9 @@ const Room: React.FC<Props> = () => {
     const [messagesFetchURL, setMessagesFetchURL] = useState<string>(`/messages?room_id=${roomId}&offset=0&fields=user,text,timestamp`) // API url for messages.
     const [fetchFirstMessagesCompleted, setFetchFirstMessagesCompleted] = useState<boolean>(false)    // First messages fetch status.
     const [hasMoreMessages, setHasMoreMessages] = useState<boolean>(true)    // Is there more messages to fetch.
+
+    const [settingsModalVisible, setSettingsModalVisible] = useState<boolean>(false)    // Settings modal visibility.
+    const [invitesModalVisible, setInvitesModalVisible] = useState<boolean>(false)    // Invites modal visibility.
 
     const [messageInputValue, setMessageInputValue] = useState<string>('');   // Message input element value.
     const [roomWebSocket, setRoomWebSocket] = useState<undefined | WebSocket>(undefined);   // Websocket instance.
@@ -135,6 +140,8 @@ const Room: React.FC<Props> = () => {
 
     return (
         <div className={classes.wrapper}>
+            <Settings roomId={parseInt(roomId)} setModalVisible={setSettingsModalVisible} modalVisible={settingsModalVisible}/>
+            <Invites roomId={parseInt(roomId)} setModalVisible={setInvitesModalVisible} modalVisible={invitesModalVisible}/>
             <Row>
                 <Col style={{width: '100%'}}>
                     <PageHeader
@@ -142,10 +149,11 @@ const Room: React.FC<Props> = () => {
                         title={room.name ? <Text strong>{room.name}</Text> : <Spin />}
                         tags={<Tag color="blue">Foo</Tag>}
                         extra={[
-                            <Button key="3">Operation</Button>,
-                            <Button key="2">Operation</Button>,
-                            <Button key="1" type="primary">
-                                Primary
+                            <Button key="1" type="primary" onClick={() => setInvitesModalVisible(true)}>
+                                Invites
+                            </Button>,
+                            <Button key="2" onClick={() => setSettingsModalVisible(true)}>
+                                Settings
                             </Button>
                         ]}
                     />

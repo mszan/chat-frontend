@@ -38,7 +38,7 @@ const Room: React.FC<Props> = () => {
     let {roomId} = useParams<{roomId: string}>();
 
     // Room details (title, messages etc).
-    const [room, setRoom] = useState<TRoom>({} as TRoom);
+    const [room, setRoom] = useState<TRoom | undefined>(undefined);
 
     // Room messages.
     const [messages, setMessages] = useState<Array<TMessage>>([] as Array<TMessage>);
@@ -70,10 +70,9 @@ const Room: React.FC<Props> = () => {
 
     /**
      * Websocket operations to be called after room fetch.
-     * @param roomId
      */
-    const runRoomWebSocket = (roomId: number) => {
-        const tempWebSocket = new WebSocket(`${process.env.REACT_APP_BACKEND_WEBSOCKET_URL}${roomId}/`);
+    const runRoomWebSocket = () => {
+        const tempWebSocket = new WebSocket(`${process.env.REACT_APP_BACKEND_WEBSOCKET_URL}${room!.id}/`);
 
         tempWebSocket.onclose = () => {console.error('Chat socket closed unexpectedly')};
 
@@ -81,8 +80,6 @@ const Room: React.FC<Props> = () => {
             const data = JSON.parse(e.data);
             const username = data.username;
             const text = data.message;
-
-            console.log(messages);
 
             const newMsg: TMessage = {
                 'user': username,
@@ -117,18 +114,24 @@ const Room: React.FC<Props> = () => {
     const fetchRoom = () => {
         axiosBackend.get(`/rooms/${roomId}`)
             .then(r => {
+                // If room is not active, redirect to another page and display message.
+                if (r.data.active === false) {
+                    message.error({
+                        content: <span>Room ID <strong>{roomId}</strong> is NOT active.</span>,
+                        duration: 10
+                    });
+                    history.push('/')
+                }
                 setRoom(r.data);
-                runRoomWebSocket(r.data.id);
-                setRoomTags(getRoomTags(r.data));
             })
             .catch(e => {
                 console.log(e);
-                history.push('/chat');
                 message.error({
                     content: <span>Unable to fetch room ID <strong>{roomId}</strong>.</span>,
                     duration: 10
                 });
-            });
+                history.push('/chat');
+            })
     }
 
 
@@ -163,12 +166,9 @@ const Room: React.FC<Props> = () => {
     /**
      * Returns array of room tags that are displayed next to room title.
      */
-    const getRoomTags = (fetchedRoom: TRoom) : ReactElement<TagType> | ReactElement<TagType>[] | undefined => {
+    const getRoomTags = () : ReactElement<TagType> | ReactElement<TagType>[] | undefined => {
         let tagsProps = new Array<TRoomTagProps>();
-        console.log(fetchedRoom)
-        localStorage.getItem('loggedUserUsername')
-        console.log(fetchedRoom.creator === localStorage.getItem('loggedUserUsername'))
-        if (fetchedRoom.creator === localStorage.getItem('loggedUserUsername')) {
+        if (room!.creator === localStorage.getItem('loggedUserUsername')) {
             tagsProps.push({
                 icon: CrownOutlined,
                 color: 'red',
@@ -176,7 +176,7 @@ const Room: React.FC<Props> = () => {
             });
         }
 
-        if (fetchedRoom.admins.includes(localStorage.getItem('loggedUserUsername')!)) {
+        if (room!.admins.includes(localStorage.getItem('loggedUserUsername')!)) {
             tagsProps.push({
                 icon: ToolOutlined,
                 color: 'volcano',
@@ -194,10 +194,20 @@ const Room: React.FC<Props> = () => {
         ));
     }
 
+
+    /**
+     * Waits for room to be fetched.
+     * After room is fetched, it calls other room dependencies (messages, tags etc.).
+     */
     useEffect(() => {
-        fetchRoom();
-        fetchMessages();
-    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+        if (!room) {
+            fetchRoom();
+        } else {
+            setRoomTags(getRoomTags())
+            fetchMessages();
+            runRoomWebSocket();
+        }
+    }, [room])
 
     return (
         <div className={classes.wrapper}>
@@ -207,7 +217,7 @@ const Room: React.FC<Props> = () => {
                 <Col style={{width: '100%'}}>
                     <PageHeader
                         style={{padding: 0}}
-                        title={room.name ? <Text strong>{room.name}</Text> : <Spin />}
+                        title={room?.name ? <Text strong>{room?.name}</Text> : <Spin />}
                         tags={roomTags}
                         extra={[
                             <Button key="1" type="primary" onClick={() => setInvitesModalVisible(true)}>

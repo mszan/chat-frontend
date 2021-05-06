@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Button, Form, Input, message, Modal, Switch} from 'antd';
 import axiosBackend from '../../../../../../../services/axios-backend';
-import {TInviteKey} from '../Invites';
+import {TInviteKey} from '../InvitesModal';
 
 interface Props {
     roomId: number,
@@ -12,7 +12,7 @@ interface Props {
     inviteKeys: Array<TInviteKey>
 }
 
-const New: React.FC<Props> = ({
+const NewInviteModal: React.FC<Props> = ({
                                       roomId: roomId,
                                       setModalVisible: setModalVisible,
                                       modalVisible: modalVisible,
@@ -119,4 +119,4 @@ const New: React.FC<Props> = ({
     )
 }
 
-export default New;
+export default NewInviteModal;

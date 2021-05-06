@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Divider, List, message, Modal, Tag, Tooltip} from 'antd';
 import axiosBackend from '../../../../../../services/axios-backend';
-import New from './New/New';
+import NewInviteModal from './NewInviteModal/NewInviteModal';
 
 export type TInviteKey = {
     id: number,
@@ -19,7 +19,7 @@ interface Props {
     modalVisible: boolean
 }
 
-const Invites: React.FC<Props> = ({roomId: roomId, setModalVisible: setModalVisible, modalVisible: modalVisible}) => {
+const InvitesModal: React.FC<Props> = ({roomId: roomId, setModalVisible: setModalVisible, modalVisible: modalVisible}) => {
     const [inviteKeys, setInviteKeys] = useState<Array<TInviteKey>>([] as Array<TInviteKey>);
 
     // Visibility state for child modal which contains new key creation form.
@@ -79,7 +79,7 @@ const Invites: React.FC<Props> = ({roomId: roomId, setModalVisible: setModalVisi
         <React.Fragment>
 
             <Modal
-                title="Invites"
+                title="InvitesModal"
                 visible={modalVisible}
                 onCancel={handleClose}
                 footer={[
@@ -142,7 +142,7 @@ const Invites: React.FC<Props> = ({roomId: roomId, setModalVisible: setModalVisi
                     }}
                 />
             </Modal>
-            <New
+            <NewInviteModal
                 roomId={roomId}
                 setModalVisible={setNewKeyModalVisible}
                 modalVisible={newKeyModalVisible}
@@ -154,4 +154,4 @@ const Invites: React.FC<Props> = ({roomId: roomId, setModalVisible: setModalVisi
     )
 }
 
-export default Invites;
+export default InvitesModal;

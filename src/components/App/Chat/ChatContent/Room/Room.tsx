@@ -1,8 +1,8 @@
 import InfiniteScroll from 'react-infinite-scroll-component';
-import Invites from './Invites/Invites';
+import InvitesModal from './InvitesModal/InvitesModal';
 import Message, {TMessage} from './Message/Message';
 import React, {ReactElement, useEffect, useState} from 'react';
-import Settings from './Settings/Settings';
+import SettingsModal from './SettingsModal/SettingsModal';
 import Text from 'antd/es/typography/Text';
 import axiosBackend from '../../../../../services/axios-backend';
 import classes from './Room.module.scss';
@@ -52,10 +52,10 @@ const Room: React.FC<Props> = () => {
     // Is there more messages to fetch.
     const [hasMoreMessages, setHasMoreMessages] = useState<boolean>(true);
 
-    // Settings modal visibility.
+    // SettingsModal modal visibility.
     const [settingsModalVisible, setSettingsModalVisible] = useState<boolean>(false);
 
-    // Invites modal visibility.
+    // InvitesModal modal visibility.
     const [invitesModalVisible, setInvitesModalVisible] = useState<boolean>(false);
 
     // Message input element value.
@@ -194,6 +194,13 @@ const Room: React.FC<Props> = () => {
         ));
     }
 
+    /**
+     * Tells whether user is present in room's 'users' field.
+     */
+    const isUserRoomParticipant = () : boolean => {
+        return room!.users.includes(localStorage.getItem('loggedUserUsername')!)
+    }
+
 
     /**
      * Waits for room to be fetched.
@@ -203,6 +210,15 @@ const Room: React.FC<Props> = () => {
         if (!room) {
             fetchRoom();
         } else {
+            // If user is not participant of this room, redirect outside the room.
+            if (!isUserRoomParticipant()) {
+                message.error({
+                    content: <span>You are not a participant of this room.<strong>If you have an invite key, insert it below.</strong></span>,
+                    duration: 3
+                });
+                history.push('/chat/join');
+            }
+
             setRoomTags(getRoomTags())
             fetchMessages();
             runRoomWebSocket();
@@ -211,8 +227,8 @@ const Room: React.FC<Props> = () => {
 
     return (
         <div className={classes.wrapper}>
-            <Settings roomId={parseInt(roomId)} setModalVisible={setSettingsModalVisible} modalVisible={settingsModalVisible}/>
-            <Invites roomId={parseInt(roomId)} setModalVisible={setInvitesModalVisible} modalVisible={invitesModalVisible}/>
+            <SettingsModal roomId={parseInt(roomId)} setModalVisible={setSettingsModalVisible} modalVisible={settingsModalVisible}/>
+            <InvitesModal roomId={parseInt(roomId)} setModalVisible={setInvitesModalVisible} modalVisible={invitesModalVisible}/>
             <Row>
                 <Col style={{width: '100%'}}>
                     <PageHeader

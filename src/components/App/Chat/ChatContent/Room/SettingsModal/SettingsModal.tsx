@@ -7,7 +7,7 @@ interface Props {
     modalVisible: boolean
 }
 
-const Settings: React.FC<Props> = ({setModalVisible: setModalVisible, modalVisible: modalVisible}) => {
+const SettingsModal: React.FC<Props> = ({setModalVisible: setModalVisible, modalVisible: modalVisible}) => {
     const handleOk = () => {
         setModalVisible(false);
     };
@@ -17,10 +17,10 @@ const Settings: React.FC<Props> = ({setModalVisible: setModalVisible, modalVisib
     };
 
     return (
-        <Modal title="Settings" visible={modalVisible} onOk={handleOk} onCancel={handleCancel}>
+        <Modal title="SettingsModal" visible={modalVisible} onOk={handleOk} onCancel={handleCancel}>
             <p>foo</p>
         </Modal>
     )
 }
 
-export default Settings;
+export default SettingsModal;

@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {Button, Divider, List, message, Modal, Tag, Tooltip} from 'antd';
 import axiosBackend from '../../../../../../services/axios-backend';
 import NewInviteModal from './NewInviteModal/NewInviteModal';
+import {CopyOutlined, LinkOutlined} from '@ant-design/icons';
+import classes from './InvitesModal.module.scss';
 
 export type TInviteKey = {
     id: number,
@@ -36,7 +38,7 @@ const InvitesModal: React.FC<Props> = ({roomId: roomId, setModalVisible: setModa
      * Fetches invite keys and saves them in 'inviteKeys'.
      */
     const fetchInviteKeys = () => {
-        axiosBackend.get(`/room-invite-keys?room_id=${roomId}`)
+        axiosBackend.get(`/rooms-invite-keys?room_id=${roomId}`)
             .then(r => {
                 setInviteKeys(r.data.results);
             })
@@ -47,7 +49,7 @@ const InvitesModal: React.FC<Props> = ({roomId: roomId, setModalVisible: setModa
      * Deletes invite key from database and updates 'inviteKeys'.
      */
     const deleteInviteKey = (keyId: number) => {
-        axiosBackend.delete(`/room-invite-keys/${keyId}`)
+        axiosBackend.delete(`/rooms-invite-keys/${keyId}`)
             .then(() => {
                 // Create new array without deleted key.
                 const newInviteKeys: Array<TInviteKey> = inviteKeys.filter(function( item ) {
@@ -69,6 +71,14 @@ const InvitesModal: React.FC<Props> = ({roomId: roomId, setModalVisible: setModa
     const openNewKeyInviteModal = () => {
         setModalVisible(false);
         setNewKeyModalVisible(true);
+    }
+
+    /**
+     * Sets clipboard value so that user can paste it anywhere aftewards.
+     * @param value string that will be set in clipboard
+     */
+    const setClipboard = async (value: string) => {
+        await navigator.clipboard.writeText(value);
     }
 
     useEffect(() => {
@@ -123,10 +133,7 @@ const InvitesModal: React.FC<Props> = ({roomId: roomId, setModalVisible: setModa
                                     <Tooltip title="Delete this key">
                                         <Button
                                             type="link"
-                                            style={{
-                                                margin: 0,
-                                                padding: 0
-                                            }}
+                                            className={classes.deleteButton}
                                             onClick={() => deleteInviteKey(item.id)}
                                         >
                                             delete
@@ -135,6 +142,25 @@ const InvitesModal: React.FC<Props> = ({roomId: roomId, setModalVisible: setModa
                                 ]}
                             >
                             <span>
+                                <CopyOutlined
+                                    className={classes.copyButton}
+                                    onClick={() => {
+                                        setClipboard(item.key)
+                                            .then(() => {
+                                                message.success('Invite key copied to clipboard.')
+                                            })
+                                    }}
+                                />
+                                <LinkOutlined
+                                    className={classes.copyButton}
+                                    onClick={() => {
+                                        setClipboard(`${window.location.protocol}//${window.location.host}/chat/rooms/join?key=${item.key}`)
+                                            .then(() => {
+                                                message.success('Invite URL copied to clipboard.')
+                                            })
+                                    }}
+                                />
+                                
                                 {item.id}{tags.length > 0 ? (<Divider type="vertical" />) : null}{tags}
                             </span>
                             </List.Item>

@@ -1,22 +1,58 @@
-import React from 'react';
-import {Button, Col, Divider, Form, Input, PageHeader, Row, Spin} from 'antd';
-import {useHistory} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import {Button, Col, Divider, Form, Input, message, PageHeader, Row, Spin} from 'antd';
+import {useHistory, useLocation} from 'react-router-dom';
 import {LockOutlined} from '@ant-design/icons';
-import Text from 'antd/es/typography/Text';
 import Paragraph from 'antd/es/typography/Paragraph';
+import axiosBackend from '../../../../../services/axios-backend';
 
 
 interface Props {}
 
 const JoinRoom: React.FC<Props> = () => {
     let history = useHistory();
+    const [form] = Form.useForm();
+
+    // A custom hook that builds on useLocation to parse the query string.
+    let queryString = new URLSearchParams(useLocation().search);
+
+    // Invite key string. Initial value checks for query string parameter 'key'.
+    const [inviteKey, setInviteKey] = useState<string | null>(queryString.get('key'));
 
     /**
-     * Gets executed when form is submitted successfully.
+     * Gets called when form is submitted successfully.
      */
-    const onFormFinish = () => {
-        console.log('y')
+    const onFormFinish = (values: any) => {
+        setInviteKey(values.inviteKey)
     }
+
+    /**
+     * Sends invite key to backend API that handles joining user to specific room.
+     */
+    const sendInviteKey = () => {
+        axiosBackend.post(`/rooms-join/${inviteKey}/`)
+            .then(r => {
+                message.success({
+                    content: <span>Successfully joined room ID <strong>{r.data.room_id}</strong>.</span>,
+                    duration: 2
+                });
+                history.push(`/chat/rooms/${r.data.room_id}`);
+            })
+            .catch(e => {
+                console.log(e.response.data)
+                message.error({
+                    content: <span>Unable to join room ID. <strong>{e.response.data.msg}</strong></span>,
+                    duration: 5
+                });
+                setInviteKey(null);
+                form.resetFields();
+            })
+    }
+
+    useEffect(() => {
+        if (inviteKey) {
+            sendInviteKey();
+        }
+    }, [inviteKey])
 
     return (
         <React.Fragment>
@@ -31,7 +67,7 @@ const JoinRoom: React.FC<Props> = () => {
             </Row>
         <Row>
             <Col span={24}>
-                <Form onFinish={onFormFinish} layout="vertical">
+                <Form form={form} onFinish={onFormFinish} layout="vertical">
                     <Form.Item
                         label="Invite key"
                         name="inviteKey"

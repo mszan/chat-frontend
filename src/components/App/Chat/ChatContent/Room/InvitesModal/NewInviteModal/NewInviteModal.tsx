@@ -44,7 +44,7 @@ const NewInviteModal: React.FC<Props> = ({
     const createInviteKey = (values: any) => {
         console.log(values)
         setSubmitButtonLoading(true);
-        axiosBackend.post('/room-invite-keys/', {
+        axiosBackend.post('/rooms-invite-keys/', {
             room: roomId,
             only_for_this_user: values.onlyForThisUser?.length > 0 ? values.onlyForThisUser : null,
             give_admin: values.giveAdmin === true,

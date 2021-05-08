@@ -29,14 +29,14 @@ const ChatContent: React.FC<Props> = ({roomList, setRoomList}) => {
                     <CreateRoom roomList={roomList} setRoomList={setRoomList} />
                 </Route>
 
+                {/*Route that displays room join form and redirects to joining room.*/}
+                <Route path={`/chat/rooms/join`} key={document.location.href}>
+                    <JoinRoom />
+                </Route>
+
                 {/*Route for existing rooms.*/}
                 <Route path={`/chat/rooms/:roomId`} key={document.location.href}>
                     <Room />
-                </Route>
-
-                {/*Route for joining new rooms.*/}
-                <Route path={`/chat/join`} key={document.location.href}>
-                    <JoinRoom />
                 </Route>
             </Switch>
         </Content>

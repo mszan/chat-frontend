@@ -1,0 +1,20 @@
+@import '../../../../../../scss/variables.scss';
+
+.copyButton {
+    color: $color-rausch;
+    padding: 5px 5px 5px 0;
+
+    &:hover {
+        color: $color-foggy;
+    }
+}
+
+.deleteButton {
+    color: $color-rausch;
+    margin: 0;
+    padding: 0;
+
+    &:hover {
+        color: $color-foggy;
+    }
+}

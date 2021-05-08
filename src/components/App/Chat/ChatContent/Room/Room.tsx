@@ -213,10 +213,10 @@ const Room: React.FC<Props> = () => {
             // If user is not participant of this room, redirect outside the room.
             if (!isUserRoomParticipant()) {
                 message.error({
-                    content: <span>You are not a participant of this room.<strong>If you have an invite key, insert it below.</strong></span>,
+                    content: <span>You are not a participant of this room. <strong>If you have an invite key, insert it below.</strong></span>,
                     duration: 3
                 });
-                history.push('/chat/join');
+                history.push('/chat/rooms/join');
             }
 
             setRoomTags(getRoomTags())

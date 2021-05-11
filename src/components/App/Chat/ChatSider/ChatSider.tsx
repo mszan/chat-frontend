@@ -15,27 +15,29 @@ interface Props {
 }
 
 const ChatSider: React.FC<Props> = ({siderCollapsed, roomList, setRoomList}) => {
+    let location = useLocation();
+
     // Get sider box-shadow style value.
     const getSiderShadow = () => { return siderCollapsed ? '0 0 17px 0 rgba(0,0,0,0.1)' : '0 0 17px 0 rgba(0,0,0,0.5)';}
 
-    let location = useLocation();
     // Takes location and splits current path to get menu item id.
     let currentSiderMenuItemKey: string = location.pathname.split('/').pop() as string
 
-    // Only once at page load.
+    /**
+     * Gets called only once at page load.
+     */
     useEffect(() => {
         fetchRooms();
     }, [])
 
-    // Fetches room list from backend API.
+    /**
+     * Fetches room list from backend API.
+     */
     const fetchRooms = () => {
-        // Call API for room list.
-        axiosBackend.get('/rooms?fields=id,url,name,active')
-            // If success, update roomList state.
+        axiosBackend.get('/rooms?fields=id,url,name,active&active=true')
             .then(r => {
                 setRoomList(r.data);
             })
-            // If error, log details to console.
             .catch(e => console.log(e))
     }
 

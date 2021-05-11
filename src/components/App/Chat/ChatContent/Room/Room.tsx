@@ -1,16 +1,18 @@
-import React, {useEffect, useState} from 'react';
-import {Button, Col, Divider, Empty, Input, message, PageHeader, Row, Spin, Tag} from 'antd';
-import {useHistory, useParams} from 'react-router-dom';
-import axiosBackend from '../../../../../services/axios-backend';
-import Message, {TMessage} from './Message/Message';
-import Text from 'antd/es/typography/Text';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import {LikeOutlined, SendOutlined} from '@ant-design/icons';
+import InvitesModal from './InvitesModal/InvitesModal';
+import Message, {TMessage} from './Message/Message';
+import React, {ReactElement, useEffect, useState} from 'react';
+import SettingsModal from './SettingsModal/SettingsModal';
+import Text from 'antd/es/typography/Text';
+import axiosBackend from '../../../../../services/axios-backend';
 import classes from './Room.module.scss';
 import moment from 'moment';
+import {Button, Col, Divider, Empty, Input, message, PageHeader, Row, Spin, Tag} from 'antd';
+import {CrownOutlined, LikeOutlined, SendOutlined, ToolOutlined} from '@ant-design/icons';
+import {useHistory, useParams} from 'react-router-dom';
+import {TagType} from 'antd/lib/tag';
 
 
-// Room.
 export type TRoom = {
     id: number,
     url: string,
@@ -21,35 +23,63 @@ export type TRoom = {
     users: string[],
 }
 
+type TRoomTagProps = {
+    icon?: typeof CrownOutlined,
+    color: string,
+    text: string,
+}
+
 interface Props {}
 
 const Room: React.FC<Props> = () => {
     let history = useHistory();
-    let {roomId} = useParams<{roomId: string}>();   // Room ID router parameter.
 
-    const [room, setRoom] = useState<TRoom>({} as TRoom)    // Room details (title, messages etc).
+    // Room ID router parameter.
+    let {roomId} = useParams<{roomId: string}>();
 
-    const [messages, setMessages] = useState<Array<TMessage>>([] as Array<TMessage>)    // Room messages.
-    const [messagesFetchURL, setMessagesFetchURL] = useState<string>(`/messages?room_id=${roomId}&offset=0&fields=user,text,timestamp`) // API url for messages.
-    const [fetchFirstMessagesCompleted, setFetchFirstMessagesCompleted] = useState<boolean>(false)    // First messages fetch status.
-    const [hasMoreMessages, setHasMoreMessages] = useState<boolean>(true)    // Is there more messages to fetch.
+    // Room details (title, messages etc).
+    const [room, setRoom] = useState<TRoom | undefined>(undefined);
 
-    const [messageInputValue, setMessageInputValue] = useState<string>('');   // Message input element value.
-    const [roomWebSocket, setRoomWebSocket] = useState<undefined | WebSocket>(undefined);   // Websocket instance.
+    // Room messages.
+    const [messages, setMessages] = useState<Array<TMessage>>([] as Array<TMessage>);
+
+    // API url for room messages.
+    const [messagesFetchURL, setMessagesFetchURL] = useState<string>(`/messages?room_id=${roomId}&offset=0&fields=user,text,timestamp`);
+
+    // First messages fetch status.
+    const [fetchFirstMessagesCompleted, setFetchFirstMessagesCompleted] = useState<boolean>(false);
+
+    // Is there more messages to fetch.
+    const [hasMoreMessages, setHasMoreMessages] = useState<boolean>(true);
+
+    // SettingsModal modal visibility.
+    const [settingsModalVisible, setSettingsModalVisible] = useState<boolean>(false);
+
+    // InvitesModal modal visibility.
+    const [invitesModalVisible, setInvitesModalVisible] = useState<boolean>(false);
+
+    // Message input element value.
+    const [messageInputValue, setMessageInputValue] = useState<string>('');
+
+    // Websocket instance.
+    const [roomWebSocket, setRoomWebSocket] = useState<undefined | WebSocket>(undefined);
+
+    // Room tags that are displayed next to room title.
+    const [roomTags, setRoomTags] = useState<ReactElement<TagType> | ReactElement<TagType>[] | undefined>(undefined);
 
 
-    // Websocket operations to be called after room fetch.
-    const runRoomWebSocket = (roomId: number) => {
-        const tempWebSocket = new WebSocket(`${process.env.REACT_APP_BACKEND_WEBSOCKET_URL}${roomId}/`);   // Create new instance.
+    /**
+     * Websocket operations to be called after room fetch.
+     */
+    const runRoomWebSocket = () => {
+        const tempWebSocket = new WebSocket(`${process.env.REACT_APP_BACKEND_WEBSOCKET_URL}${room!.id}/`);
 
-        tempWebSocket.onclose = () => {console.error('Chat socket closed unexpectedly')};   // Handles closing WS connection.
+        tempWebSocket.onclose = () => {console.error('Chat socket closed unexpectedly')};
 
-        tempWebSocket.onmessage = e => {    // Handles receiving new messages.
-            const data = JSON.parse(e.data);        // Parses message data.
-            const username = data.username          // Username.
-            const text = data.message;              // Message content.
-
-            console.log(messages);
+        tempWebSocket.onmessage = e => {
+            const data = JSON.parse(e.data);
+            const username = data.username;
+            const text = data.message;
 
             const newMsg: TMessage = {
                 'user': username,
@@ -57,13 +87,16 @@ const Room: React.FC<Props> = () => {
                 'timestamp': moment().format()
             }
 
-            setMessages(messages => [newMsg, ...messages]) // Append new message to state.
+            setMessages(messages => [newMsg, ...messages]);
         }
 
-        setRoomWebSocket(tempWebSocket);   // New websocket instance.
+        setRoomWebSocket(tempWebSocket);
     }
 
-    // Sends message to websocket.
+    /**
+     * Sends message to websocket.
+     * @param event form submit event.
+     */
     const sendMessage = (event: React.FormEvent<EventTarget>) => {
         event.preventDefault(); // Prevent page reload on form submit.
 
@@ -75,34 +108,38 @@ const Room: React.FC<Props> = () => {
         setMessageInputValue('');
     }
 
-    // Fetches specific room details from API.
+    /**
+     * Fetches specific room details from API.
+     */
     const fetchRoom = () => {
-        // Call API for room.
         axiosBackend.get(`/rooms/${roomId}`)
-            // If success, update roomList state.
             .then(r => {
-                setRoom(r.data);    // Room details.
-                runRoomWebSocket(r.data.id); // Perform operations to set websocket.
+                // If room is not active, redirect to another page and display message.
+                if (r.data.active === false) {
+                    message.error({
+                        content: <span>Room ID <strong>{roomId}</strong> is NOT active.</span>,
+                        duration: 10
+                    });
+                    history.push('/')
+                }
+                setRoom(r.data);
             })
-            // If error, log details to console.
             .catch(e => {
-                console.log(e)  // Log details to console.
-
-                history.push('/chat')  // Redirect to login page.
+                console.log(e);
                 message.error({
                     content: <span>Unable to fetch room ID <strong>{roomId}</strong>.</span>,
                     duration: 10
                 });
+                history.push('/chat');
             })
     }
 
-    // Fetches messages from API.
-    const fetchMessages = () => {
-        console.log('fetchMessages RUN')
 
-        // Call API for room.
+    /**
+     * Fetches messages from backend API.
+     */
+    const fetchMessages = () => {
         axiosBackend.get(messagesFetchURL)
-            // If success, update messages state.
             .then(r => {
                 // Map messages (or add new messages) to state.
                 r.data.results.map((newMsg: TMessage) => (
@@ -116,36 +153,94 @@ const Room: React.FC<Props> = () => {
                 if (r.data.next) { setMessagesFetchURL(r.data.next); }
                 else { setHasMoreMessages(false); }
             })
-            // If error, log details to console.
             .catch(e => {
-                console.log(e)  // Log details to console.
-
-                history.push('/chat')  // Redirect to login page.
+                console.log(e);
+                history.push('/chat');
                 message.error({
                     content: <span>Unable to fetch messages for room ID <strong>{roomId}</strong>.</span>,
                     duration: 10
                 });
-            })
+            });
     }
 
+    /**
+     * Returns array of room tags that are displayed next to room title.
+     */
+    const getRoomTags = () : ReactElement<TagType> | ReactElement<TagType>[] | undefined => {
+        let tagsProps = new Array<TRoomTagProps>();
+        if (room!.creator === localStorage.getItem('loggedUserUsername')) {
+            tagsProps.push({
+                icon: CrownOutlined,
+                color: 'red',
+                text: 'Creator',
+            });
+        }
+
+        if (room!.admins.includes(localStorage.getItem('loggedUserUsername')!)) {
+            tagsProps.push({
+                icon: ToolOutlined,
+                color: 'volcano',
+                text: 'Admin',
+            });
+        }
+
+        return tagsProps.map(item => (
+            <Tag
+                icon={item?.icon ? React.createElement(item.icon) : null}
+                color={item.color}
+            >
+                {item.text}
+            </Tag>
+        ));
+    }
+
+    /**
+     * Tells whether user is present in room's 'users' field.
+     */
+    const isUserRoomParticipant = () : boolean => {
+        return room!.users.includes(localStorage.getItem('loggedUserUsername')!)
+    }
+
+
+    /**
+     * Waits for room to be fetched.
+     * After room is fetched, it calls other room dependencies (messages, tags etc.).
+     */
     useEffect(() => {
-        fetchRoom();
-        fetchMessages();
-    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+        if (!room) {
+            fetchRoom();
+        } else {
+            // If user is not participant of this room, redirect outside the room.
+            if (!isUserRoomParticipant()) {
+                message.error({
+                    content: <span>You are not a participant of this room. <strong>If you have an invite key, insert it below.</strong></span>,
+                    duration: 3
+                });
+                history.push('/chat/rooms/join');
+            }
+
+            setRoomTags(getRoomTags())
+            fetchMessages();
+            runRoomWebSocket();
+        }
+    }, [room])
 
     return (
         <div className={classes.wrapper}>
+            <SettingsModal roomId={parseInt(roomId)} setModalVisible={setSettingsModalVisible} modalVisible={settingsModalVisible}/>
+            <InvitesModal roomId={parseInt(roomId)} setModalVisible={setInvitesModalVisible} modalVisible={invitesModalVisible}/>
             <Row>
                 <Col style={{width: '100%'}}>
                     <PageHeader
                         style={{padding: 0}}
-                        title={room.name ? <Text strong>{room.name}</Text> : <Spin />}
-                        tags={<Tag color="blue">Foo</Tag>}
+                        title={room?.name ? <Text strong>{room?.name}</Text> : <Spin />}
+                        tags={roomTags}
                         extra={[
-                            <Button key="3">Operation</Button>,
-                            <Button key="2">Operation</Button>,
-                            <Button key="1" type="primary">
-                                Primary
+                            <Button key="1" type="primary" onClick={() => setInvitesModalVisible(true)}>
+                                Invites
+                            </Button>,
+                            <Button key="2" onClick={() => setSettingsModalVisible(true)}>
+                                Settings
                             </Button>
                         ]}
                     />

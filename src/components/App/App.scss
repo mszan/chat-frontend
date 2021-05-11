@@ -1,0 +1,8 @@
+// GLOBAL (APP-WIDE) STYLES
+
+//// OVERRIDES ANTD STYLES
+.ant-list-item-action {
+  > li {
+    padding: 0 !important;
+  }
+}

@@ -4,6 +4,7 @@ import Room from './Room/Room';
 import {Route, Switch} from 'react-router-dom';
 import CreateRoom from './CreateRoom/CreateRoom';
 import {IRoomOnSider} from '../Chat';
+import JoinRoom from './JoinRoom/JoinRoom';
 
 const { Content } = Layout;
 
@@ -26,6 +27,11 @@ const ChatContent: React.FC<Props> = ({roomList, setRoomList}) => {
                 {/*Route for creating new room.*/}
                 <Route path={`/chat/rooms/create`}>
                     <CreateRoom roomList={roomList} setRoomList={setRoomList} />
+                </Route>
+
+                {/*Route that displays room join form and redirects to joining room.*/}
+                <Route path={`/chat/rooms/join`} key={document.location.href}>
+                    <JoinRoom />
                 </Route>
 
                 {/*Route for existing rooms.*/}

@@ -21,7 +21,7 @@ const CreateRoomForm: React.FC<Props> = ({roomList, setRoomList}) => {
 
         axiosBackend.post('/rooms/', {
             name: values.name,
-            active: false,
+            active: true,
             admins: [localStorage.getItem('loggedUserUsername')],
             users: [localStorage.getItem('loggedUserUsername')]
         })

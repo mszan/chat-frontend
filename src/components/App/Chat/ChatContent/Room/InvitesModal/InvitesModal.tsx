@@ -2,8 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {Button, Divider, List, message, Modal, Tag, Tooltip} from 'antd';
 import axiosBackend from '../../../../../../services/axios-backend';
 import NewInviteModal from './NewInviteModal/NewInviteModal';
-import {CopyOutlined, LinkOutlined} from '@ant-design/icons';
+import {CopyOutlined, LinkOutlined, FieldTimeOutlined} from '@ant-design/icons';
 import classes from './InvitesModal.module.scss';
+import moment from 'moment';
 
 export type TInviteKey = {
     id: number,
@@ -81,6 +82,17 @@ const InvitesModal: React.FC<Props> = ({roomId: roomId, setModalVisible: setModa
         await navigator.clipboard.writeText(value);
     }
 
+    /**
+     * Checks if invite key is up to date (is not expired).
+     * @param key invite key object
+     * @returns boolean
+     */
+    const isInviteKeyUpToDate = (key: TInviteKey) : boolean => {
+        const now = new Date();
+        const key_valid_due = new Date(key.valid_due)
+        return now < key_valid_due;
+    }
+
     useEffect(() => {
         fetchInviteKeys();
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
@@ -109,11 +121,11 @@ const InvitesModal: React.FC<Props> = ({roomId: roomId, setModalVisible: setModa
                         // Holds tags (badges) to be displayed.
                         let tags: Array<JSX.Element> = [];
 
-                        // Add user tag if invite is for specific user.
-                        if (item.only_for_this_user !== null) {
+                        // Add expiration icon if key is close to expire.
+                        if (!isInviteKeyUpToDate(item)) {
                             tags.unshift(
-                                <Tooltip title="Valid only for this user">
-                                    <Tag color="blue">{item.only_for_this_user}</Tag>
+                                <Tooltip title="Key has expired">
+                                    <FieldTimeOutlined className={classes.expiredClockIcon} />
                                 </Tooltip>
                             )
                         }
@@ -129,11 +141,12 @@ const InvitesModal: React.FC<Props> = ({roomId: roomId, setModalVisible: setModa
 
                         return (
                             <List.Item
+                                className={classes.listItem}
                                 actions={[
                                     <Tooltip title="Delete this key">
                                         <Button
                                             type="link"
-                                            className={classes.deleteButton}
+                                            className={classes.deleteBtn}
                                             onClick={() => deleteInviteKey(item.id)}
                                         >
                                             delete
@@ -142,8 +155,9 @@ const InvitesModal: React.FC<Props> = ({roomId: roomId, setModalVisible: setModa
                                 ]}
                             >
                             <span>
+                            <Tooltip title="Copy invite key to clipboard">
                                 <CopyOutlined
-                                    className={classes.copyButton}
+                                    className={classes.copyBtn}
                                     onClick={() => {
                                         setClipboard(item.key)
                                             .then(() => {
@@ -151,16 +165,18 @@ const InvitesModal: React.FC<Props> = ({roomId: roomId, setModalVisible: setModa
                                             })
                                     }}
                                 />
-                                <LinkOutlined
-                                    className={classes.copyButton}
-                                    onClick={() => {
-                                        setClipboard(`${window.location.protocol}//${window.location.host}/chat/rooms/join?key=${item.key}`)
-                                            .then(() => {
-                                                message.success('Invite URL copied to clipboard.')
-                                            })
-                                    }}
-                                />
-                                
+                            </Tooltip>
+                                <Tooltip title="Copy invite URL to clipboard">
+                                    <LinkOutlined
+                                        className={classes.copyBtn}
+                                        onClick={() => {
+                                            setClipboard(`${window.location.protocol}//${window.location.host}/chat/rooms/join?key=${item.key}`)
+                                                .then(() => {
+                                                    message.success('Invite URL copied to clipboard.')
+                                                })
+                                        }}
+                                    />
+                                </Tooltip>
                                 {item.id}{tags.length > 0 ? (<Divider type="vertical" />) : null}{tags}
                             </span>
                             </List.Item>

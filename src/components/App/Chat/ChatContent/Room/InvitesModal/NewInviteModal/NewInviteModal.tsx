@@ -42,7 +42,6 @@ const NewInviteModal: React.FC<Props> = ({
      * Makes a request to backend and creates a new invite key.
      */
     const createInviteKey = (values: any) => {
-        console.log(values)
         setSubmitButtonLoading(true);
         axiosBackend.post('/rooms-invite-keys/', {
             room: roomId,
@@ -50,7 +49,6 @@ const NewInviteModal: React.FC<Props> = ({
             give_admin: values.giveAdmin === true,
         })
             .then(r => {
-                console.log(r.data);
                 message.success({content: <span>Key ID <strong>{r.data.id}</strong> created.</span>});
                 const newInviteKey: TInviteKey = {
                     id: r.data.id,

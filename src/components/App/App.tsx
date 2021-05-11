@@ -5,6 +5,7 @@ import {BrowserRouter as Router, Route, Switch, useHistory, useLocation} from 'r
 import Chat from './Chat/Chat';
 import {isLoggedIn} from 'axios-jwt';
 import {message} from 'antd';
+import './App.scss'
 
 type Props = {}
 

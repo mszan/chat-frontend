@@ -1,20 +1,34 @@
 @import '../../../../../../scss/variables.scss';
 
-.copyButton {
-    color: $color-rausch;
+
+
+.listItem {
+  .copyBtn {
+    color: $color-foggy !important;
     padding: 5px 5px 5px 0;
-
+    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  
     &:hover {
-        color: $color-foggy;
+      color: $color-rausch !important;
     }
-}
+  }
 
-.deleteButton {
-    color: $color-rausch;
+  .deleteBtn {
     margin: 0;
-    padding: 0;
-
-    &:hover {
-        color: $color-foggy;
+    padding: 0 !important;
+  
+    span {
+      color: $color-foggy !important;
+      transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
     }
+    &:hover span {
+      color: $color-rausch !important;
+    }
+  }
+
+  .expiredClockIcon {
+    color: $color-rausch;
+  }
 }
+
+

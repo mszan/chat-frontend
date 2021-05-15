@@ -7,7 +7,7 @@ interface Props {
     modalVisible: boolean
 }
 
-const SettingsModal: React.FC<Props> = ({setModalVisible: setModalVisible, modalVisible: modalVisible}) => {
+const SettingsModal: React.FC<Props> = ({setModalVisible, modalVisible}) => {
     const handleOk = () => {
         setModalVisible(false);
     };

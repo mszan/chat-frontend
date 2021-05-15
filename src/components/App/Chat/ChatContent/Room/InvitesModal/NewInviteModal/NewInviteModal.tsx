@@ -13,12 +13,12 @@ interface Props {
 }
 
 const NewInviteModal: React.FC<Props> = ({
-                                      roomId: roomId,
-                                      setModalVisible: setModalVisible,
-                                      modalVisible: modalVisible,
-                                      setInvitesModalVisible: setInvitesModalVisible,
-                                      setInviteKeys: setInviteKeys,
-                                      inviteKeys: inviteKeys
+                                      roomId,
+                                      setModalVisible,
+                                      modalVisible,
+                                      setInvitesModalVisible,
+                                      setInviteKeys,
+                                      inviteKeys
                                   }) => {
     /**
      * Goes back to previous parent modal.

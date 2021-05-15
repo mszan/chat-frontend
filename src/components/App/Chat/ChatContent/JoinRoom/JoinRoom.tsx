@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {Button, Col, Divider, Form, Input, message, PageHeader, Row, Spin} from 'antd';
+import {Button, Col, Divider, Form, Input, message, PageHeader, Row} from 'antd';
 import {useHistory, useLocation} from 'react-router-dom';
 import {LockOutlined} from '@ant-design/icons';
 import Paragraph from 'antd/es/typography/Paragraph';

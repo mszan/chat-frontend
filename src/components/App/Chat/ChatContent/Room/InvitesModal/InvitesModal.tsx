@@ -4,7 +4,6 @@ import axiosBackend from '../../../../../../services/axios-backend';
 import NewInviteModal from './NewInviteModal/NewInviteModal';
 import {CopyOutlined, LinkOutlined, FieldTimeOutlined} from '@ant-design/icons';
 import classes from './InvitesModal.module.scss';
-import moment from 'moment';
 
 export type TInviteKey = {
     id: number,
@@ -22,7 +21,7 @@ interface Props {
     modalVisible: boolean
 }
 
-const InvitesModal: React.FC<Props> = ({roomId: roomId, setModalVisible: setModalVisible, modalVisible: modalVisible}) => {
+const InvitesModal: React.FC<Props> = ({roomId, setModalVisible, modalVisible}) => {
     const [inviteKeys, setInviteKeys] = useState<Array<TInviteKey>>([] as Array<TInviteKey>);
 
     // Visibility state for child modal which contains new key creation form.

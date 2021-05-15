@@ -230,9 +230,9 @@ const Room: React.FC<Props> = () => {
             <SettingsModal roomId={parseInt(roomId)} setModalVisible={setSettingsModalVisible} modalVisible={settingsModalVisible}/>
             <InvitesModal roomId={parseInt(roomId)} setModalVisible={setInvitesModalVisible} modalVisible={invitesModalVisible}/>
             <Row>
-                <Col style={{width: '100%'}}>
+                <Col className={classes.headerCol}>
                     <PageHeader
-                        style={{padding: 0}}
+                        className={classes.header}
                         title={room?.name ? <Text strong>{room?.name}</Text> : <Spin />}
                         tags={roomTags}
                         extra={[
@@ -249,22 +249,14 @@ const Room: React.FC<Props> = () => {
             </Row>
             <Row>
                 <Col span={24}>
-                    <div
-                        id="scrollableDiv"
-                        style={{
-                            height: '70vh',
-                            overflow: 'auto',
-                            display: 'flex',
-                            flexDirection: 'column-reverse',
-                        }}
-                    >
+                    <div id="scrollableDiv" className={classes.scrollableDiv}>
                         <InfiniteScroll
                             dataLength={messages.length}
                             next={fetchMessages}
                             hasMore={hasMoreMessages}
                             loader={<Row justify="center"><Col><Spin /></Col></Row>}
                             inverse={true}
-                            style={{ display: 'flex', flexDirection: 'column-reverse' }} //To put endMessage and loader to the top.
+                            className={classes.infiniteScroll}
                             scrollableTarget="scrollableDiv"
 
                         >
@@ -278,7 +270,7 @@ const Room: React.FC<Props> = () => {
                                         />
                                     )
                                 }) :
-                                <Row justify="center" align="middle" style={{height: '70vh'}}>
+                                <Row justify="center" align="middle" className={classes.noChatHistoryRow}>
                                     <Col>
                                         {fetchFirstMessagesCompleted ?
                                             <Empty description="Room history is empty so far."/> :
@@ -302,7 +294,7 @@ const Room: React.FC<Props> = () => {
                 <Row className={classes.footer}>
                     <Col flex="auto">
                         <Input
-                            style={{width: '100%'}} placeholder="Type a message..."
+                            className={classes.input} placeholder="Type a message..."
                             onChange={event => setMessageInputValue(event.target.value)}
                             value={messageInputValue}
                         />

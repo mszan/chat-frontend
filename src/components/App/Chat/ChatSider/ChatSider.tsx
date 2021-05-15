@@ -43,7 +43,6 @@ const ChatSider: React.FC<Props> = ({siderCollapsed, roomList, setRoomList}) => 
 
     return (
         <Sider
-            className={classes.wrapper}
             trigger={null}
             collapsible
             collapsed={siderCollapsed}
@@ -52,7 +51,7 @@ const ChatSider: React.FC<Props> = ({siderCollapsed, roomList, setRoomList}) => 
         >
             <div key="siderLogo" className={classes.logo}>
                 <Link to="">
-                    <CoffeeOutlined style={{fontSize: '1.5rem'}}/>
+                    <CoffeeOutlined className={classes.logoIcon}/>
                 </Link>
             </div>
             <Menu theme="dark" mode="inline" selectedKeys={[currentSiderMenuItemKey]}>
@@ -64,7 +63,7 @@ const ChatSider: React.FC<Props> = ({siderCollapsed, roomList, setRoomList}) => 
                             icon={
                                 <Avatar style={{lineHeight: '32px'}}>{room.name[0].toUpperCase()}</Avatar>
                             }
-                            style={{paddingLeft: '24px'}}
+                            className={classes.menuItem}
                         >
                             <NavLink to={`/chat/rooms/${room.id}`}>
                                 {room.name}
@@ -75,16 +74,8 @@ const ChatSider: React.FC<Props> = ({siderCollapsed, roomList, setRoomList}) => 
                 {/*Create new room item.*/}
                 <Menu.Item
                     key="create"
-                    icon={
-                        <Avatar
-                            style={{
-                                fontSize: '20px',
-                                lineHeight: '31px',
-                                backgroundColor: '#fa898b',
-                            }}
-                        >+</Avatar>
-                    }
-                    style={{paddingLeft: '24px'}}
+                    className={classes.menuItem}
+                    icon={<Avatar className={classes.menuItemCreateRoomIcon}>+</Avatar>}
                 >
                     <NavLink to={`/chat/rooms/create`}>
                         Create room

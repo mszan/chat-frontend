@@ -1,6 +1,7 @@
 // GLOBAL (APP-WIDE) STYLES
+// Main scss file and the only one that is not a module (.module.scss).
 
-//// OVERRIDES ANTD STYLES
+// OVERRIDES ANTD STYLES
 .ant-list-item-action {
   > li {
     padding: 0 !important;

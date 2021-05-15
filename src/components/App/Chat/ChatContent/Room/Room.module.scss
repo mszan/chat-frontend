@@ -4,6 +4,31 @@
   position: relative;
   height: calc(100vh - 120px);
 
+  .headerCol {
+    width: 100%;
+
+    .header {
+      padding: 0;
+    }
+  }
+
+  .scrollableDiv {
+    height: 70vh;
+    overflow: auto;
+    display: flex;
+    flex-direction: column-reverse;
+
+    .infiniteScroll {
+      // To put endMessage and loader to the top.
+      display: flex;
+      flex-direction: column-reverse;
+
+      .noChatHistoryRow {
+        height: 70vh;
+      }
+    }
+  }
+
   .footer {
     position: absolute;
     bottom: 0;
@@ -14,6 +39,10 @@
       padding: 6px 0 6px 6px;
       font-size: 20px;
       transition: color 0.15s cubic-bezier(0.645, 0.045, 0.355, 1);
+    }
+
+    .input {
+      width: 100%;
     }
   }
 }

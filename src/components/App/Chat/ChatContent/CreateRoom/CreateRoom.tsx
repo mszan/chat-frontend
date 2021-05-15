@@ -14,9 +14,9 @@ const CreateRoom: React.FC<Props> = ({roomList, setRoomList}) => {
     return (
         <div className={classes.wrapper}>
             <Row>
-                <Col style={{width: '100%'}}>
+                <Col className={classes.headerCol}>
                     <PageHeader
-                        style={{padding: 0}}
+                        className={classes.header}
                         title="Create new room"
                     />
                     <Divider />

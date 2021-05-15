@@ -4,6 +4,7 @@ import {useHistory, useLocation} from 'react-router-dom';
 import {LockOutlined} from '@ant-design/icons';
 import Paragraph from 'antd/es/typography/Paragraph';
 import axiosBackend from '../../../../../services/axios-backend';
+import classes from './JoinRoom.module.scss';
 
 
 interface Props {}
@@ -57,8 +58,8 @@ const JoinRoom: React.FC<Props> = () => {
     return (
         <React.Fragment>
             <Row>
-                <Col style={{width: '100%'}}>
-                    <PageHeader style={{padding: 0}} title="Join room"/>
+                <Col className={classes.headerCol}>
+                    <PageHeader className={classes.header} title="Join room"/>
                     <Paragraph>
                         From here you can join new rooms. You need an invite key to do that.
                     </Paragraph>

@@ -1,3 +1,11 @@
 .wrapper {
   position: relative;
+
+  .headerCol {
+    width: 100%;
+    
+    .header {
+      padding: 0;
+    }
+  }
 }

@@ -1,9 +1,22 @@
 @import '../../../../scss/variables.scss';
 
-.wrapper {
-  .logo {
-    color: $color-rausch!important;
-    text-align: center;
-    margin: 17px 0!important;
+.logo {
+  color: $color-rausch!important;
+  text-align: center;
+  margin: 17px 0!important;
+
+  .logoIcon {
+    font-size: 1.5rem;
+  }
+}
+
+.menuItem {
+  padding-left: 24px;
+
+  .menuItemCreateRoomIcon {
+
+    font-size: 20px;
+    line-height: 31px;
+    background-color: #fa898b;
   }
 }

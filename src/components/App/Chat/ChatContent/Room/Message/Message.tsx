@@ -26,9 +26,7 @@ const Message: React.FC<Props> = ({renderAvatar, msg}) => {
             return (
                 <Col>
                     <Tooltip placement="bottom" title={msg.user}>
-                        <Avatar size="small" style={{
-                            margin: isMsgSentByLoggedUser() ? '0 0 2px 5px' : '0 5px 2px 0'
-                        }} >
+                        <Avatar size="small" style={{margin: isMsgSentByLoggedUser() ? '0 0 2px 5px' : '0 5px 2px 0'}} >
                             {msg.user[0].toUpperCase()}
                         </Avatar>
                     </Tooltip>
@@ -37,7 +35,7 @@ const Message: React.FC<Props> = ({renderAvatar, msg}) => {
         } else {
             return (
                 <Col>
-                    <div style={{width: 29}} />
+                    <div/>
                 </Col>
             )
         }
@@ -49,15 +47,8 @@ const Message: React.FC<Props> = ({renderAvatar, msg}) => {
             <Col>
                 <Tooltip placement="bottom" title={moment(msg.timestamp).format('hh:mm, MMMM Do')} mouseEnterDelay={0.5}>
                     <Card
-                        style={{
-                            width: 300,
-                            backgroundColor: isMsgSentByLoggedUser() ? '#ffdddd' : '#ffffff',
-                            borderRadius: 5,
-                            marginTop: 5
-                        }}
-                        bodyStyle={{
-                            padding: 10,
-                        }}
+                        style={{backgroundColor: isMsgSentByLoggedUser() ? '#ffdddd' : '#ffffff'}}
+                        bodyStyle={{padding: 10}}
                     >
                         {/*<span>{msg.timestamp}</span>*/}
                         <span>{msg.text}</span>

@@ -5,6 +5,7 @@ import {Route, Switch} from 'react-router-dom';
 import CreateRoom from './CreateRoom/CreateRoom';
 import {IRoomOnSider} from '../Chat';
 import JoinRoom from './JoinRoom/JoinRoom';
+import classes from './ChatContent.module.scss';
 
 const { Content } = Layout;
 
@@ -15,13 +16,7 @@ interface Props {
 
 const ChatContent: React.FC<Props> = ({roomList, setRoomList}) => {
     return (
-        <Content
-            style={{
-                margin: '24px 16px',
-                padding: '0 24px',
-                minHeight: 280,
-            }}
-        >
+        <Content className={classes.wrapper}>
             {/*Chat switch.*/}
             <Switch>
                 {/*Route for creating new room.*/}

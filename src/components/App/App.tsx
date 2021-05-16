@@ -25,7 +25,7 @@ const App: React.FC<Props> = () => (
                     {/*Chat.*/}
                     <RouteWrapper
                         component={Chat} title={"Chat"} loginRequired={true}
-                        navKey={1} exact={false} path="/chat"
+                        navKey={2} exact={false} path="/chat"
                     />
 
                     {/*Landing page.*/}

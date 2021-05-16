@@ -6,6 +6,13 @@ interface ILoginRequest {
     password: string
 }
 
+interface IRegisterRequest {
+    username: string,
+    password1: string,
+    password2: string,
+    email: string
+}
+
 
 // Login user.
 const login = async (params: ILoginRequest) => {
@@ -32,4 +39,9 @@ if (isLoggedIn()) {
 const accessToken = getAccessToken()
 const refreshToken = getRefreshToken()
 
-export {login, logout, accessToken, refreshToken};
+// Register user.
+const register = async (params: IRegisterRequest) => {
+    await axiosBackend.post('/accounts/registration/', params)
+}
+
+export {login, logout, register, accessToken, refreshToken};

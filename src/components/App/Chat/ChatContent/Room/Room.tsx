@@ -240,7 +240,7 @@ const Room: React.FC<Props> = () => {
                                 Invites
                             </Button>,
                             <Button key="2" onClick={() => setSettingsModalVisible(true)}>
-                                Settings
+                                Room settings
                             </Button>
                         ]}
                     />

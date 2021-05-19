@@ -3,7 +3,7 @@ import {IAuthTokens, TokenRefreshRequest, useAuthTokenInterceptor as authTokenIn
 
 // Axios instance dedicated for backend API.
 const axiosBackend = axios.create({
-    baseURL: 'http://localhost:8100/api'
+    baseURL: process.env.REACT_APP_BACKEND_API_URL
 });
 
 // Type of response from login endpoint.

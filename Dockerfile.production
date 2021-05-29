@@ -10,12 +10,12 @@ ENV REACT_APP_BACKEND_WEBSOCKET_URL=$REACT_APP_BACKEND_WEBSOCKET_URL
 ARG REACT_APP_BACKEND_API_URL
 ENV REACT_APP_BACKEND_API_URL=$REACT_APP_BACKEND_API_URL
 
-COPY package.json /app/
+COPY package.json yarn.lock /app/
 
 RUN npm install -g serve
 
-RUN npm install
+RUN yarn install
 
 COPY ./ /app/
 
-RUN npm run build
+RUN yarn run build

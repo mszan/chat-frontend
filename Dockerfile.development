@@ -1,4 +1,4 @@
-FROM node:14-alpine
+FROM node:14.17.0-alpine
 
 ENV PATH /app/node_modules/.bin:$PATH
 
@@ -12,7 +12,7 @@ WORKDIR /app
 
 COPY package.json /app/
 
-RUN yarn install
+RUN yarn install --network-timeout 1000000
 
 COPY ./ /app/
 

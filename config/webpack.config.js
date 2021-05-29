@@ -63,6 +63,7 @@ const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
 const sassRegex = /\.(scss|sass)$/;
 const sassModuleRegex = /\.module\.(scss|sass)$/;
+const lessRegex = /\.less$/;
 
 const hasJsxRuntime = (() => {
   if (process.env.DISABLE_NEW_JSX_TRANSFORM === 'true') {
@@ -533,6 +534,25 @@ module.exports = function (webpackEnv) {
                 },
                 'sass-loader'
               ),
+            },
+            // Ant Design custom themes
+            // https://ant.design/docs/react/customize-theme
+            {
+              test: lessRegex,
+              use: [{
+                  loader: 'style-loader',
+                }, {
+                  loader: 'css-loader', // translates CSS into CommonJS
+                }, {
+                  loader: 'less-loader',
+                  options:{
+                    javascriptEnabled: true,
+                    modifyVars: {
+                      'primary-color': '#FF5A5F',
+                      'layout-header-background': '#484848'
+                    },
+                  },
+              }],
             },
             // "file" loader makes sure those assets get served by WebpackDevServer.
             // When you `import` an asset, you get its (virtual) filename.

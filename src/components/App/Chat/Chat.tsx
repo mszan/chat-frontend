@@ -40,7 +40,7 @@ const Chat: React.FC<Props> = () => {
 
 
     return (
-        <Layout className={classes.wrapper}>
+        <Layout className={classes.wrapper} hasSider>
             <ChatSider siderCollapsed={siderCollapsedState} roomList={roomList} setRoomList={setRoomList}/>
             <Layout>
                 <ChatHeader siderCollapsed={siderCollapsedState} setSiderCollapsed={setSiderCollapsed} />

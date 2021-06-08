@@ -15,7 +15,6 @@ const LoginForm: React.FC<Props> = () => {
     const onFinish = (values: any) => {
         // Tell user he's being logged in.
         setButtonLoading(true);
-        console.log(process.env.REACT_APP_BACKEND_API_URL)
 
         // Try to login user.
         login({

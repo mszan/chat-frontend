@@ -70,6 +70,10 @@ const RegistrationForm: React.FC<Props> = () => {
             required: true,
             message: 'Please input your password.',
           },
+          {
+            min: 8,
+            message: 'Password is too short.',
+          },
         ]}
       >
         <Input
@@ -87,13 +91,17 @@ const RegistrationForm: React.FC<Props> = () => {
             required: true,
             message: 'Please confirm your password.',
           },
+          {
+            min: 8,
+            message: 'Password is too short.',
+          },
           ({ getFieldValue }) => ({
             validator(_, value) {
               if (!value || getFieldValue('password1') === value) {
                 return Promise.resolve()
               }
               return Promise.reject(
-                new Error('The two passwords that you entered do not match.'),
+                new Error('Passwords do not match.'),
               )
             },
           }),

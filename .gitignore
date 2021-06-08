@@ -27,3 +27,8 @@ yarn-error.log*
 /.idea/inspectionProfiles/Project_Default.xml
 /.idea/vcs.xml
 /.env
+
+# vscode
+.vscode
+workspace.code-workspace
+.history

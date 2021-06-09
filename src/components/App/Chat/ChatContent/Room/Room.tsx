@@ -8,7 +8,7 @@ import axiosBackend from '../../../../../services/axios-backend';
 import classes from './Room.module.scss';
 import moment from 'moment';
 import {Button, Col, Divider, Empty, Input, message, PageHeader, Row, Spin, Tag} from 'antd';
-import {CrownOutlined, LikeOutlined, SendOutlined, ToolOutlined} from '@ant-design/icons';
+import {CrownOutlined, LikeOutlined, SendOutlined, ToolOutlined, UserAddOutlined, SettingOutlined} from '@ant-design/icons';
 import {useHistory, useParams} from 'react-router-dom';
 import {TagType} from 'antd/lib/tag';
 
@@ -185,11 +185,9 @@ const Room: React.FC<Props> = () => {
         }
 
         return tagsProps.map(item => (
-            <Tag
-                icon={item?.icon ? React.createElement(item.icon) : null}
-                color={item.color}
-            >
-                {item.text}
+            <Tag color={item.color}>
+                {item?.icon ? React.createElement(item.icon) : null}
+                <span className={classes.tagSpan}>{item.text}</span>
             </Tag>
         ));
     }
@@ -237,10 +235,12 @@ const Room: React.FC<Props> = () => {
                         tags={roomTags}
                         extra={[
                             <Button key="1" type="primary" onClick={() => setInvitesModalVisible(true)}>
-                                Invites
+                                <UserAddOutlined />
+                                <span className={classes.btnSpan}>Invites</span>
                             </Button>,
                             <Button key="2" onClick={() => setSettingsModalVisible(true)}>
-                                Room settings
+                                <SettingOutlined />
+                                <span className={classes.btnSpan}>Room settings</span>
                             </Button>
                         ]}
                     />
@@ -283,11 +283,6 @@ const Room: React.FC<Props> = () => {
                             }
                         </InfiniteScroll>
                     </div>
-                </Col>
-            </Row>
-            <Row>
-                <Col span={24}>
-                    <Divider />
                 </Col>
             </Row>
             <form onSubmit={sendMessage}>

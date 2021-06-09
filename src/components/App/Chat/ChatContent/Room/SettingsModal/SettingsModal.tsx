@@ -18,7 +18,7 @@ const SettingsModal: React.FC<Props> = ({setModalVisible, modalVisible}) => {
 
     return (
         <Modal title="SettingsModal" visible={modalVisible} onOk={handleOk} onCancel={handleCancel}>
-            <p>foo</p>
+            <p>Soon.</p>
         </Modal>
     )
 }

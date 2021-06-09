@@ -46,7 +46,7 @@ const ChatSider: React.FC<Props> = ({siderCollapsed, roomList, setRoomList}) => 
             trigger={null}
             collapsible
             collapsed={siderCollapsed}
-            collapsedWidth={window.innerWidth < 400 ? 0 : 80}
+            collapsedWidth={window.innerWidth < 768 ? 0 : 80}
             style={{boxShadow: getSiderShadow()}}
         >
             <div key="siderLogo" className={classes.logo}>

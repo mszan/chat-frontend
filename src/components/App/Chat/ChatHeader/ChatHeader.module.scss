@@ -1,7 +1,9 @@
 @import '../../../../scss/variables.scss';
+@import '../../../../scss/mixins.scss';
 
 .wrapper {
   padding: 0!important;
+  min-width: 100vw;
 
   .sidebarToggleBtn {
     color: #A7ADB4;
@@ -16,5 +18,9 @@
 
   .dropdownLink {
     padding: 22px;
+  }
+
+  @include md {
+    min-width: unset;
   }
 }

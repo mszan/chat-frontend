@@ -1,6 +1,7 @@
 // Global styles.
 @import 'variables.scss';
 
-body {
-  color: #484848;
+html, body {
+  background-color: $bg-gray;
+  color: $color-hof;
 }

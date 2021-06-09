@@ -48,7 +48,7 @@ const ChatHeader: React.FC<Props> = ({ siderCollapsed, setSiderCollapsed }) => {
           <Dropdown
             overlay={
               <Menu>
-                <Menu.Item key="0" icon={<SettingOutlined />}>
+                <Menu.Item key="0" icon={<SettingOutlined />} disabled>
                   User settings
                 </Menu.Item>
 

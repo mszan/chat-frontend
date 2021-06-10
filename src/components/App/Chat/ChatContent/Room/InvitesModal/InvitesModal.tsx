@@ -100,7 +100,7 @@ const InvitesModal: React.FC<Props> = ({roomId, setModalVisible, modalVisible}) 
         <React.Fragment>
 
             <Modal
-                title="InvitesModal"
+                title="Invites"
                 visible={modalVisible}
                 onCancel={handleClose}
                 footer={[

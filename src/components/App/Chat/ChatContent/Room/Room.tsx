@@ -100,12 +100,24 @@ const Room: React.FC<Props> = () => {
     const sendMessage = (event: React.FormEvent<EventTarget>) => {
         event.preventDefault(); // Prevent page reload on form submit.
 
-        roomWebSocket?.send(JSON.stringify({
-            'username': localStorage.getItem('loggedUserUsername'),
-            'message': messageInputValue
-        }))
-
-        setMessageInputValue('');
+        if (messageInputValue.length === 0) {
+            message.error({
+                content: <span>Message can't be empty.</span>,
+                duration: 3
+            });
+        } else if (messageInputValue.length > 500) {
+            message.error({
+                content: <span>Message is too long. It must be not longer than 500 characters.</span>,
+                duration: 3
+            });
+        } else {
+            roomWebSocket?.send(JSON.stringify({
+                'username': localStorage.getItem('loggedUserUsername'),
+                'message': messageInputValue
+            }))
+            setMessageInputValue('');
+        }
+        
     }
 
     /**

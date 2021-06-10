@@ -6,6 +6,7 @@ import CreateRoom from './CreateRoom/CreateRoom';
 import {IRoomOnSider} from '../Chat';
 import JoinRoom from './JoinRoom/JoinRoom';
 import classes from './ChatContent.module.scss';
+import Welcome from './Welcome/Welcome';
 
 const { Content } = Layout;
 
@@ -32,6 +33,11 @@ const ChatContent: React.FC<Props> = ({roomList, setRoomList}) => {
                 {/*Route for existing rooms.*/}
                 <Route path={`/chat/rooms/:roomId`} key={document.location.href}>
                     <Room />
+                </Route>
+
+                {/*Logged in welcome screen.*/}
+                <Route path={`/chat`} exact key={document.location.href}>
+                    <Welcome />
                 </Route>
             </Switch>
         </Content>

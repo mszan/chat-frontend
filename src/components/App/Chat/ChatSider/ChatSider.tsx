@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link, NavLink, useLocation} from 'react-router-dom';
 import axiosBackend from '../../../../services/axios-backend';
 import classes from './ChatSider.module.scss';
@@ -6,7 +6,7 @@ import {Avatar, Menu} from 'antd';
 import {CoffeeOutlined} from '@ant-design/icons';
 import Sider from 'antd/lib/layout/Sider';
 import {IRoomOnSider} from '../Chat';
-
+import useWindowWidth from '../../../../hooks/useWindowWidth';
 
 interface Props {
     siderCollapsed:  boolean;
@@ -23,9 +23,7 @@ const ChatSider: React.FC<Props> = ({siderCollapsed, roomList, setRoomList}) => 
     // Takes location and splits current path to get menu item id.
     let currentSiderMenuItemKey: string = location.pathname.split('/').pop() as string
 
-    /**
-     * Gets called only once at page load.
-     */
+    // Gets called only once at page load.
     useEffect(() => {
         fetchRooms();
     }, [])
@@ -41,12 +39,21 @@ const ChatSider: React.FC<Props> = ({siderCollapsed, roomList, setRoomList}) => 
             .catch(e => console.log(e))
     }
 
+    // Used to handle siderbar collapse state when user resizes the window.
+    let windowWidth = useWindowWidth();
+
+    const [siderCollapsedWidth, setSiderCollapsedWidth] = useState<number>(windowWidth);
+
+    useEffect(() => {
+        windowWidth < 768 ? setSiderCollapsedWidth(0) : setSiderCollapsedWidth(80);
+    }, [windowWidth]);
+
     return (
         <Sider
             trigger={null}
             collapsible
             collapsed={siderCollapsed}
-            collapsedWidth={window.innerWidth < 768 ? 0 : 80}
+            collapsedWidth={siderCollapsedWidth}
             style={{boxShadow: getSiderShadow()}}
         >
             <div key="siderLogo" className={classes.logo}>

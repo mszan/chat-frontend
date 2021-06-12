@@ -97,8 +97,11 @@ const Room: React.FC<Props> = () => {
      * Sends message to websocket.
      * @param event form submit event.
      */
-    const sendMessage = (event: React.FormEvent<EventTarget>) => {
-        event.preventDefault(); // Prevent page reload on form submit.
+    const sendMessage = (event?: React.FormEvent<EventTarget>) => {
+        // Prevent page reload on form submit.
+        if (event) {
+            event.preventDefault();
+        }
 
         if (messageInputValue.length === 0) {
             message.error({
@@ -235,6 +238,7 @@ const Room: React.FC<Props> = () => {
         }
     }, [room])
 
+
     return (
         <div className={classes.wrapper}>
             <SettingsModal roomId={parseInt(roomId)} setModalVisible={setSettingsModalVisible} modalVisible={settingsModalVisible}/>
@@ -307,9 +311,19 @@ const Room: React.FC<Props> = () => {
                         />
                     </Col>
                     <Col flex="26px">
-                        {React.createElement(messageInputValue === '' ? LikeOutlined : SendOutlined, {
+                        {/* {React.createElement(messageInputValue === '' ? LikeOutlined : SendOutlined, {
                             className: classes.sendBtn,
-                            onClick: () => console.log("btnClicked"),
+                            onClick: () => {
+                                if (messageInputValue === '') {
+                                    setMessageInputValue(String.fromCodePoint(0x1F44D));
+                                }
+
+                                setTimeout(() => sendMessage(), 2000);
+                            },
+                        })} */}
+                        {React.createElement(SendOutlined, {
+                            className: classes.sendBtn,
+                            onClick: () => sendMessage(),
                         })}
                     </Col>
                 </Row>

@@ -18,14 +18,12 @@ interface Props {}
 const Chat: React.FC<Props> = () => {
     // Get sider collapse state from localStorage.
     const getSiderCollapsedLocalStorage = () => {
-        const localStorageVal = localStorage.getItem('siderCollapsed')
-
-        // If localStorage value is present and its value is 'true'.
+        const localStorageVal = localStorage.getItem('siderCollapsed');
         return !!(localStorageVal && localStorageVal === 'true');
     }
 
     // State of collapsed sider.
-    const [siderCollapsedState, setSiderCollapseState] = useState<boolean>(getSiderCollapsedLocalStorage())
+    const [siderCollapsedState, setSiderCollapseState] = useState<boolean>(getSiderCollapsedLocalStorage());
 
     // Set localStorage and state to negation of previous state (true -> false OR false -> true).
     const setSiderCollapsed = () => {

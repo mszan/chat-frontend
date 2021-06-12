@@ -13,27 +13,23 @@ const LoginForm: React.FC<Props> = () => {
     let history = useHistory();
     // Handles login form onFinish.
     const onFinish = (values: any) => {
-        // Tell user he's being logged in.
         setButtonLoading(true);
 
-        // Try to login user.
         login({
             'username': values.username,
             'password': values.password
         })
-            // If login succeeded.
             .then(() => {
                 message.success('You are logged in now.');
-                history.push('/chat'); // Redirect to protected chat app.
+                history.push('/chat');
             })
-            // If login failed.
             .catch(e => {
-                message.error('Something went wrong, try again.'); // Display message to user.
+                message.error('Try again.');
 
                 // To prevent multiple login attempts, enable button after certain time.
                 setTimeout(() => setButtonLoading(false), 1000);
 
-                console.log(e);  // Log login error.
+                console.log(e);
             });
     };
 

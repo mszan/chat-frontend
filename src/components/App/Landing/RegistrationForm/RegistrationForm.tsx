@@ -13,7 +13,6 @@ const RegistrationForm: React.FC<Props> = () => {
   let history = useHistory()
   // Handles register form onFinish.
   const onFinish = (values: any) => {
-    // Tell user he's being logged in.
     setButtonLoading(true)
 
     register({

@@ -19,12 +19,12 @@ const Welcome: React.FC<Props> = () => {
                 To get started, use the sider on your left to create a new room. From there you will be able to invite the others and chat with them in real-time.
             </Paragraph>
             <Paragraph>
+                You can also <RouterLink to="/chat/rooms/join">join an existing room</RouterLink>.
+            </Paragraph>
+            <Divider />
+            <Paragraph>
                 Hopefully someday I will evolve this app into something useful.
             </Paragraph>
-            <RouterLink to="/chat/rooms/join">
-                I have an invite key
-            </RouterLink>
-            <Divider />
             <Link href="https://github.com/mszan/chat-app" target="_blank">
                 GitHub
             </Link>

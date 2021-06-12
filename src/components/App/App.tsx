@@ -9,10 +9,9 @@ import './App.scss'
 
 type Props = {}
 
-// Main component.
+// Entry component.
 const App: React.FC<Props> = () => (
     <React.Fragment>
-        {/*React helmet.*/}
         <Helmet>
             <title>Chat App</title>
             <meta name="description" content="Chat App" />
@@ -22,7 +21,7 @@ const App: React.FC<Props> = () => (
         <Router>
             <div>
                 <Switch>
-                    {/*Chat.*/}
+                    {/*Chat app.*/}
                     <RouteWrapper
                         component={Chat} title={"Chat"} loginRequired={true}
                         navKey={2} exact={false} path="/chat"
@@ -40,17 +39,15 @@ const App: React.FC<Props> = () => (
 
 )
 
-// Route wrapper interface.
 interface IRouteWrapper {
     component: React.ComponentType, // Component to be wrapped.
     title: string,                  // Component title.
     loginRequired: boolean,         // If true, access is only for authenticated users.
     navKey: number,                 // ChatSider index.
-    exact: boolean,                 // Route path exact.
+    exact: boolean,                 // If true, path must be exact.
     path: string,                   // Route path.
 }
 
-// Route wrapper component.
 // Used to determinate access to authenticated-only pages.
 const RouteWrapper: React.FC<IRouteWrapper> = ({component: Component, title, loginRequired, navKey}) => {
     let history = useHistory();
@@ -62,7 +59,7 @@ const RouteWrapper: React.FC<IRouteWrapper> = ({component: Component, title, log
             if (isLoggedIn()) { return <Component  /> } // If user is logged in, return protected component.
             else {
                 const previousPage = location.pathname;
-                history.push('')  // Redirect to login page.
+                history.push('');
                 message.error({
                     content: <span>You need to be logged in to access <strong>{previousPage}</strong>.</span>,
                     duration: 10

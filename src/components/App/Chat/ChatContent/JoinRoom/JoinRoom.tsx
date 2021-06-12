@@ -23,7 +23,7 @@ const JoinRoom: React.FC<Props> = () => {
      * Gets called when form is submitted successfully.
      */
     const onFormFinish = (values: any) => {
-        setInviteKey(values.inviteKey)
+        setInviteKey(values.inviteKey);
     }
 
     /**
@@ -66,24 +66,24 @@ const JoinRoom: React.FC<Props> = () => {
                     <Divider />
                 </Col>
             </Row>
-        <Row>
-            <Col span={24}>
-                <Form form={form} onFinish={onFormFinish} layout="vertical">
-                    <Form.Item
-                        label="Invite key"
-                        name="inviteKey"
-                        rules={[{ required: true, message: 'Please input invite key!' }]}
-                    >
-                        <Input prefix={<LockOutlined />} placeholder="e.g. seWol4BihReSkKu3cwCy" />
-                    </Form.Item>
-                    <Form.Item>
-                        <Button type="primary" htmlType="submit">
-                            Join
-                        </Button>
-                    </Form.Item>
-                </Form>
-            </Col>
-        </Row>
+            <Row>
+                <Col span={24}>
+                    <Form form={form} onFinish={onFormFinish} layout="vertical">
+                        <Form.Item
+                            label="Invite key"
+                            name="inviteKey"
+                            rules={[{ required: true, message: 'Please input invite key!' }]}
+                        >
+                            <Input prefix={<LockOutlined />} placeholder="e.g. seWol4BihReSkKu3cwCy" />
+                        </Form.Item>
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit">
+                                Join
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                </Col>
+            </Row>
         </React.Fragment>
     )
 }

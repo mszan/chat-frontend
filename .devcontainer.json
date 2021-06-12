@@ -3,6 +3,6 @@
     "dockerComposeFile": ["../docker-compose.development.yml"],
     "service": "frontend",
     "shutdownAction": "none",
-    // "extensions": [],
+    "extensions": ["dbaeumer.vscode-eslint"],
     "workspaceFolder": "/app"
   }

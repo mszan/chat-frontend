@@ -5,7 +5,7 @@ import {BrowserRouter as Router, Route, Switch, useHistory, useLocation} from 'r
 import Chat from './Chat/Chat';
 import {isLoggedIn} from 'axios-jwt';
 import {message} from 'antd';
-import './App.scss'
+import './App.scss';
 
 type Props = {}
 
@@ -37,7 +37,7 @@ const App: React.FC<Props> = () => (
         </Router>
     </React.Fragment>
 
-)
+);
 
 interface IRouteWrapper {
     component: React.ComponentType, // Component to be wrapped.
@@ -50,13 +50,13 @@ interface IRouteWrapper {
 
 // Used to determinate access to authenticated-only pages.
 const RouteWrapper: React.FC<IRouteWrapper> = ({component: Component, title, loginRequired, navKey}) => {
-    let history = useHistory();
-    let location = useLocation();
+    const history = useHistory();
+    const location = useLocation();
 
     // Get layout's inner component depending on logged user.
     const getComponent = () => {
         if (loginRequired) {    // If page is protected (login is required to view this page).
-            if (isLoggedIn()) { return <Component  /> } // If user is logged in, return protected component.
+            if (isLoggedIn()) { return <Component  />; } // If user is logged in, return protected component.
             else {
                 const previousPage = location.pathname;
                 history.push('');
@@ -65,11 +65,11 @@ const RouteWrapper: React.FC<IRouteWrapper> = ({component: Component, title, log
                     duration: 10
                 });
             }
-        } else { return <Component /> }
-    }
+        } else { return <Component />; }
+    };
 
     // Return route component.
     return (<Route render={() => getComponent()} />);
-}
+};
 
 export default App;

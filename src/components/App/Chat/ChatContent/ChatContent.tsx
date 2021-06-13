@@ -41,7 +41,7 @@ const ChatContent: React.FC<Props> = ({roomList, setRoomList}) => {
                 </Route>
             </Switch>
         </Content>
-    )
-}
+    );
+};
 
 export default ChatContent;

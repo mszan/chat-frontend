@@ -8,10 +8,9 @@ import axiosBackend from '../../../../../services/axios-backend';
 import classes from './Room.module.scss';
 import moment from 'moment';
 import {Button, Col, Divider, Empty, Input, message, PageHeader, Row, Spin, Tag} from 'antd';
-import {CrownOutlined, LikeOutlined, SendOutlined, ToolOutlined, UserAddOutlined, SettingOutlined} from '@ant-design/icons';
+import {CrownOutlined, SendOutlined, ToolOutlined, UserAddOutlined, SettingOutlined} from '@ant-design/icons';
 import {useHistory, useParams} from 'react-router-dom';
 import {TagType} from 'antd/lib/tag';
-
 
 export type TRoom = {
     id: number,
@@ -32,10 +31,10 @@ type TRoomTagProps = {
 interface Props {}
 
 const Room: React.FC<Props> = () => {
-    let history = useHistory();
+    const history = useHistory();
 
     // Room ID router parameter.
-    let {roomId} = useParams<{roomId: string}>();
+    const {roomId} = useParams<{roomId: string}>();
 
     // Room details (title, messages etc).
     const [room, setRoom] = useState<TRoom | undefined>(undefined);
@@ -74,7 +73,7 @@ const Room: React.FC<Props> = () => {
     const runRoomWebSocket = () => {
         const tempWebSocket = new WebSocket(`${process.env.REACT_APP_BACKEND_WEBSOCKET_URL}${room!.id}/`);
 
-        tempWebSocket.onclose = () => {console.error('Chat socket closed unexpectedly')};
+        tempWebSocket.onclose = () => {console.error('Chat socket closed unexpectedly');};
 
         tempWebSocket.onmessage = e => {
             const data = JSON.parse(e.data);
@@ -85,13 +84,13 @@ const Room: React.FC<Props> = () => {
                 'user': username,
                 'text': text,
                 'timestamp': moment().format()
-            }
+            };
 
             setMessages(messages => [newMsg, ...messages]);
-        }
+        };
 
         setRoomWebSocket(tempWebSocket);
-    }
+    };
 
     /**
      * Sends message to websocket.
@@ -105,7 +104,7 @@ const Room: React.FC<Props> = () => {
 
         if (messageInputValue.length === 0) {
             message.error({
-                content: <span>Message can't be empty.</span>,
+                content: <span>Message cannot be empty.</span>,
                 duration: 3
             });
         } else if (messageInputValue.length > 500) {
@@ -117,11 +116,11 @@ const Room: React.FC<Props> = () => {
             roomWebSocket?.send(JSON.stringify({
                 'username': localStorage.getItem('loggedUserUsername'),
                 'message': messageInputValue
-            }))
+            }));
             setMessageInputValue('');
         }
         
-    }
+    };
 
     /**
      * Fetches specific room details from API.
@@ -135,7 +134,7 @@ const Room: React.FC<Props> = () => {
                         content: <span>Room ID <strong>{roomId}</strong> is NOT active.</span>,
                         duration: 10
                     });
-                    history.push('/')
+                    history.push('/');
                 }
                 setRoom(r.data);
             })
@@ -146,8 +145,8 @@ const Room: React.FC<Props> = () => {
                     duration: 10
                 });
                 history.push('/chat');
-            })
-    }
+            });
+    };
 
 
     /**
@@ -176,13 +175,13 @@ const Room: React.FC<Props> = () => {
                     duration: 10
                 });
             });
-    }
+    };
 
     /**
      * Returns array of room tags that are displayed next to room title.
      */
     const getRoomTags = () : ReactElement<TagType> | ReactElement<TagType>[] | undefined => {
-        let tagsProps = new Array<TRoomTagProps>();
+        const tagsProps = new Array<TRoomTagProps>();
         if (room!.creator === localStorage.getItem('loggedUserUsername')) {
             tagsProps.push({
                 icon: CrownOutlined,
@@ -199,20 +198,20 @@ const Room: React.FC<Props> = () => {
             });
         }
 
-        return tagsProps.map(item => (
-            <Tag color={item.color}>
+        return tagsProps.map((item, idx) => (
+            <Tag color={item.color} key={idx}>
                 {item?.icon ? React.createElement(item.icon) : null}
                 <span className={classes.tagSpan}>{item.text}</span>
             </Tag>
         ));
-    }
+    };
 
     /**
      * Tells whether user is present in room's 'users' field.
      */
     const isUserRoomParticipant = () : boolean => {
-        return room!.users.includes(localStorage.getItem('loggedUserUsername')!)
-    }
+        return room!.users.includes(localStorage.getItem('loggedUserUsername')!);
+    };
 
 
     /**
@@ -232,11 +231,11 @@ const Room: React.FC<Props> = () => {
                 history.push('/chat/rooms/join');
             }
 
-            setRoomTags(getRoomTags())
+            setRoomTags(getRoomTags());
             fetchMessages();
             runRoomWebSocket();
         }
-    }, [room])
+    }, [room]);
 
 
     return (
@@ -280,11 +279,12 @@ const Room: React.FC<Props> = () => {
                                 messages.map((msg) => {
                                     return (
                                         <Message
+                                            key={msg.id}
                                             msg={msg}
                                             renderAvatar={true} // TODO: Determinate if avatar should be rendered.
                                             // If user didn't change, don't re-render same avatar.
                                         />
-                                    )
+                                    );
                                 }) :
                                 <Row justify="center" align="middle" className={classes.noChatHistoryRow}>
                                     <Col>
@@ -329,7 +329,7 @@ const Room: React.FC<Props> = () => {
                 </Row>
             </form>
         </div>
-    )
-}
+    );
+};
 
 export default Room;

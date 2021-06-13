@@ -8,9 +8,9 @@ const getWidth = () => window.innerWidth
    * Custom hook that returns browser window width.
    * @returns window width
    */
-function useWindowWidth() {
+function useWindowWidth(): number {
   // save current window width in the state object
-  let [width, setWidth] = useState(getWidth());
+  const [width, setWidth] = useState(getWidth());
 
   // in this case useEffect will execute only once because
   // it does not have any dependencies.
@@ -30,8 +30,8 @@ function useWindowWidth() {
     return () => {
       // remove resize listener
       window.removeEventListener('resize', resizeListener);
-    }
-  }, [])
+    };
+  }, []);
 
   return width;
 }

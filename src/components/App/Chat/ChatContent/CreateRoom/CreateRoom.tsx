@@ -33,7 +33,7 @@ const CreateRoom: React.FC<Props> = ({roomList, setRoomList}) => {
                 </Col>
             </Row>
         </div>
-    )
-}
+    );
+};
 
 export default CreateRoom;

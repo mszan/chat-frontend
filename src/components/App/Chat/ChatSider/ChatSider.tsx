@@ -15,18 +15,18 @@ interface Props {
 }
 
 const ChatSider: React.FC<Props> = ({siderCollapsed, roomList, setRoomList}) => {
-    let location = useLocation();
+    const location = useLocation();
 
     // Get sider box-shadow style value.
-    const getSiderShadow = () => { return siderCollapsed ? '0 0 17px 0 rgba(0,0,0,0.1)' : '0 0 17px 0 rgba(0,0,0,0.5)';}
+    const getSiderShadow = () => { return siderCollapsed ? '0 0 17px 0 rgba(0,0,0,0.1)' : '0 0 17px 0 rgba(0,0,0,0.5)';};
 
     // Takes location and splits current path to get menu item id.
-    let currentSiderMenuItemKey: string = location.pathname.split('/').pop() as string
+    const currentSiderMenuItemKey: string = location.pathname.split('/').pop() as string;
 
     // Gets called only once at page load.
     useEffect(() => {
         fetchRooms();
-    }, [])
+    }, []);
 
     /**
      * Fetches room list from backend API.
@@ -36,11 +36,11 @@ const ChatSider: React.FC<Props> = ({siderCollapsed, roomList, setRoomList}) => 
             .then(r => {
                 setRoomList(r.data);
             })
-            .catch(e => console.log(e))
-    }
+            .catch(e => console.log(e));
+    };
 
     // Used to handle siderbar collapse state when user resizes the window.
-    let windowWidth = useWindowWidth();
+    const windowWidth = useWindowWidth();
 
     const [siderCollapsedWidth, setSiderCollapsedWidth] = useState<number>(windowWidth);
 
@@ -76,7 +76,7 @@ const ChatSider: React.FC<Props> = ({siderCollapsed, roomList, setRoomList}) => 
                                 {room.name}
                             </NavLink>
                         </Menu.Item>
-                    )
+                    );
                 })}
                 {/*Create new room item.*/}
                 <Menu.Item
@@ -91,6 +91,6 @@ const ChatSider: React.FC<Props> = ({siderCollapsed, roomList, setRoomList}) => 
             </Menu>
         </Sider>
     );
-}
+};
 
 export default ChatSider;

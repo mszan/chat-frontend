@@ -16,4 +16,6 @@ RUN yarn install --network-timeout 1000000
 
 COPY ./ /app/
 
+RUN apk add --no-cache git
+
 CMD ["yarn", "start"]

@@ -4,5 +4,8 @@
     "service": "frontend",
     "shutdownAction": "none",
     "extensions": ["dbaeumer.vscode-eslint"],
-    "workspaceFolder": "/app"
+    "workspaceFolder": "/app",
+    "settings": {
+      "git.path": "/usr/bin/git",
+    }
   }

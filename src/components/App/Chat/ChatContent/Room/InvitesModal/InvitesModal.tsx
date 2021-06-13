@@ -43,7 +43,7 @@ const InvitesModal: React.FC<Props> = ({roomId, setModalVisible, modalVisible}) 
                 setInviteKeys(r.data.results);
             })
             .catch(e => console.log(e));
-    }
+    };
 
     /**
      * Deletes invite key from database and updates 'inviteKeys'.
@@ -60,9 +60,9 @@ const InvitesModal: React.FC<Props> = ({roomId, setModalVisible, modalVisible}) 
             })
             .catch(e => {
                 message.error({content: <span>Key ID <strong>NOT</strong> deleted.</span>});
-                console.log(e)
+                console.log(e);
             });
-    }
+    };
 
     /**
      * Switches currently opened modals to display one
@@ -71,7 +71,7 @@ const InvitesModal: React.FC<Props> = ({roomId, setModalVisible, modalVisible}) 
     const openNewKeyInviteModal = () => {
         setModalVisible(false);
         setNewKeyModalVisible(true);
-    }
+    };
 
     /**
      * Sets clipboard value so that user can paste it anywhere aftewards.
@@ -79,7 +79,7 @@ const InvitesModal: React.FC<Props> = ({roomId, setModalVisible, modalVisible}) 
      */
     const setClipboard = async (value: string) => {
         await navigator.clipboard.writeText(value);
-    }
+    };
 
     /**
      * Checks if invite key is up to date (is not expired).
@@ -88,13 +88,13 @@ const InvitesModal: React.FC<Props> = ({roomId, setModalVisible, modalVisible}) 
      */
     const isInviteKeyUpToDate = (key: TInviteKey) : boolean => {
         const now = new Date();
-        const key_valid_due = new Date(key.valid_due)
+        const key_valid_due = new Date(key.valid_due);
         return now < key_valid_due;
-    }
+    };
 
     useEffect(() => {
         fetchInviteKeys();
-    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <React.Fragment>
@@ -118,7 +118,7 @@ const InvitesModal: React.FC<Props> = ({roomId, setModalVisible, modalVisible}) 
                     dataSource={inviteKeys}
                     renderItem={item => {
                         // Holds tags (badges) to be displayed.
-                        let tags: Array<JSX.Element> = [];
+                        const tags: Array<JSX.Element> = [];
 
                         // Add expiration icon if key is close to expire.
                         if (!isInviteKeyUpToDate(item)) {
@@ -126,7 +126,7 @@ const InvitesModal: React.FC<Props> = ({roomId, setModalVisible, modalVisible}) 
                                 <Tooltip title="Key has expired">
                                     <FieldTimeOutlined className={classes.expiredClockIcon} />
                                 </Tooltip>
-                            )
+                            );
                         }
 
                         // Add admin tag if invite gives admin privileges.
@@ -135,14 +135,14 @@ const InvitesModal: React.FC<Props> = ({roomId, setModalVisible, modalVisible}) 
                                 <Tooltip title="Gives administrative privileges">
                                     <Tag color="red">admin</Tag>
                                 </Tooltip>
-                            )
+                            );
                         }
 
                         return (
                             <List.Item
                                 className={classes.listItem}
                                 actions={[
-                                    <Tooltip title="Delete this key">
+                                    <Tooltip title="Delete this key" key="delete">
                                         <Button
                                             type="link"
                                             className={classes.deleteBtn}
@@ -160,8 +160,8 @@ const InvitesModal: React.FC<Props> = ({roomId, setModalVisible, modalVisible}) 
                                     onClick={() => {
                                         setClipboard(item.key)
                                             .then(() => {
-                                                message.success('Invite key copied to clipboard.')
-                                            })
+                                                message.success('Invite key copied to clipboard.');
+                                            });
                                     }}
                                 />
                             </Tooltip>
@@ -171,15 +171,15 @@ const InvitesModal: React.FC<Props> = ({roomId, setModalVisible, modalVisible}) 
                                         onClick={() => {
                                             setClipboard(`${window.location.protocol}//${window.location.host}/chat/rooms/join?key=${item.key}`)
                                                 .then(() => {
-                                                    message.success('Invite URL copied to clipboard.')
-                                                })
+                                                    message.success('Invite URL copied to clipboard.');
+                                                });
                                         }}
                                     />
                                 </Tooltip>
                                 {item.id}{tags.length > 0 ? (<Divider type="vertical" />) : null}{tags}
                             </span>
                             </List.Item>
-                        )
+                        );
                     }}
                 />
             </Modal>
@@ -192,7 +192,7 @@ const InvitesModal: React.FC<Props> = ({roomId, setModalVisible, modalVisible}) 
                 setInviteKeys={setInviteKeys}
             />
         </React.Fragment>
-    )
-}
+    );
+};
 
 export default InvitesModal;

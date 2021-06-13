@@ -12,6 +12,12 @@ interface Props {
     inviteKeys: Array<TInviteKey>
 }
 
+type TNewInviteKey = {
+    room: string,
+    onlyForThisUser?: string,
+    giveAdmin?: boolean,
+}
+
 const NewInviteModal: React.FC<Props> = ({
                                       roomId,
                                       setModalVisible,
@@ -41,11 +47,11 @@ const NewInviteModal: React.FC<Props> = ({
     /**
      * Makes a request to backend and creates a new invite key.
      */
-    const createInviteKey = (values: any) => {
+    const createInviteKey = (values: TNewInviteKey) => {
         setSubmitButtonLoading(true);
         axiosBackend.post('/rooms-invite-keys/', {
             room: roomId,
-            only_for_this_user: values.onlyForThisUser?.length > 0 ? values.onlyForThisUser : null,
+            only_for_this_user: (values.onlyForThisUser && values.onlyForThisUser.length > 0) ? values.onlyForThisUser : null,
             give_admin: values.giveAdmin === true,
         })
             .then(r => {
@@ -58,7 +64,7 @@ const NewInviteModal: React.FC<Props> = ({
                     only_for_this_user: r.data.only_for_this_user,
                     valid_due: r.data.valid_due,
                     give_admin: r.data.give_admin
-                }
+                };
                 setInviteKeys([...inviteKeys, newInviteKey]);
                 handleBack();
             })
@@ -68,8 +74,8 @@ const NewInviteModal: React.FC<Props> = ({
             })
             .then(() => {
                 setTimeout(() => setSubmitButtonLoading(false), 2000);
-            })
-    }
+            });
+    };
 
     return (
         <Modal
@@ -114,7 +120,7 @@ const NewInviteModal: React.FC<Props> = ({
                 </Form.Item>
             </Form>
         </Modal>
-    )
-}
+    );
+};
 
 export default NewInviteModal;

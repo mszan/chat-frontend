@@ -1,27 +1,24 @@
-import React from 'react'
-import classes from './ChatHeader.module.scss'
+import React from 'react';
+import classes from './ChatHeader.module.scss';
 import {
-  Badge,
   Col,
   Dropdown,
   Layout,
   Menu,
   message,
   Row,
-  Typography,
-} from 'antd'
+} from 'antd';
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   PoweroffOutlined,
   DownOutlined,
   SettingOutlined
-} from '@ant-design/icons'
-import { logout } from '../../../../services/auth'
-import { useHistory } from 'react-router-dom'
+} from '@ant-design/icons';
+import { logout } from '../../../../services/auth';
+import { useHistory } from 'react-router-dom';
 
-const { Header } = Layout
-const { Text } = Typography
+const { Header } = Layout;
 
 interface Props {
   siderCollapsed: boolean
@@ -30,7 +27,7 @@ interface Props {
 
 const ChatHeader: React.FC<Props> = ({ siderCollapsed, setSiderCollapsed }) => {
   // Used to redirect user to login page after getting logged out.
-  let history = useHistory()
+  const history = useHistory();
 
   return (
     <Header className={classes.wrapper}>
@@ -54,9 +51,9 @@ const ChatHeader: React.FC<Props> = ({ siderCollapsed, setSiderCollapsed }) => {
 
                 <Menu.Item key="3" icon={<PoweroffOutlined />}
                   onClick={() => {
-                    logout()
-                    history.push('')
-                    message.success('Bye bye!')
+                    logout();
+                    history.push('');
+                    message.success('Bye bye!');
                   }}
                 >
                   Logout
@@ -75,7 +72,7 @@ const ChatHeader: React.FC<Props> = ({ siderCollapsed, setSiderCollapsed }) => {
         </Col>
       </Row>
     </Header>
-  )
-}
+  );
+};
 
-export default ChatHeader
+export default ChatHeader;

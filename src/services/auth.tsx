@@ -15,20 +15,20 @@ interface IRegisterRequest {
 
 
 // Login user.
-const login = async (params: ILoginRequest) => {
-    const res: IAuthResponse = (await axiosBackend.post('/token/', params)).data
+const login = async (params: ILoginRequest): Promise<void> => {
+    const res: IAuthResponse = (await axiosBackend.post('/token/', params)).data;
     // Save tokens to localStorage.
-    setAuthTokens(authResponseToAuthTokens(res))
+    setAuthTokens(authResponseToAuthTokens(res));
 
     // Save username to localStorage.
-    localStorage.setItem('loggedUserUsername', params.username)
-}
+    localStorage.setItem('loggedUserUsername', params.username);
+};
 
 // Resets auth tokens.
-const logout = () => {
-    clearAuthTokens()
-    localStorage.removeItem('loggedUserUsername')
-}
+const logout = (): void => {
+    clearAuthTokens();
+    localStorage.removeItem('loggedUserUsername');
+};
 
 // Checks if refresh token exists.
 if (isLoggedIn()) {
@@ -36,12 +36,12 @@ if (isLoggedIn()) {
 }
 
 // Gets access to auth tokens.
-const accessToken = getAccessToken()
-const refreshToken = getRefreshToken()
+const accessToken = getAccessToken();
+const refreshToken = getRefreshToken();
 
 // Register user.
-const register = async (params: IRegisterRequest) => {
-    await axiosBackend.post('/accounts/registration/', params)
-}
+const register = async (params: IRegisterRequest): Promise<void> => {
+    await axiosBackend.post('/accounts/registration/', params);
+};
 
 export {login, logout, register, accessToken, refreshToken};

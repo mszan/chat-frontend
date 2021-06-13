@@ -13,25 +13,25 @@ export interface IAuthResponse {
 }
 
 // Refresh token endpoint.
-const refreshEndpoint = `${axiosBackend.defaults.baseURL}/token/refresh/`
+const refreshEndpoint = `${axiosBackend.defaults.baseURL}/token/refresh/`;
 
 // Transform response into IAuthTokens.
 // This assumes your auth endpoint returns `{"access_token": ..., "refresh_token": ...}`.
 export const authResponseToAuthTokens = (res: IAuthResponse): IAuthTokens => ({
     accessToken: res.access,
     refreshToken: res.refresh,
-})
+});
 
 // Define token refresh function.
 const requestRefresh: TokenRefreshRequest = async (refreshToken: string): Promise<string> => {
     // Perform refresh.
-    return (await axios.post(refreshEndpoint, { refresh: refreshToken })).data.access
-}
+    return (await axios.post(refreshEndpoint, { refresh: refreshToken })).data.access;
+};
 
 // Add interceptor to your axios instance.
-authTokenInterceptor(axiosBackend, { requestRefresh })
+authTokenInterceptor(axiosBackend, { requestRefresh });
 
 // Add content-type header because DRF API requires it to be specified.
-axiosBackend.defaults.headers.post['content-type'] = 'application/json'
+axiosBackend.defaults.headers.post['content-type'] = 'application/json';
 
 export default axiosBackend;

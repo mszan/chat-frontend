@@ -21,6 +21,8 @@
         "@typescript-eslint"
     ],
     "rules": {
-        "semi": ["error", "always"]
+        "semi": ["error", "always"],
+        "@typescript-eslint/no-empty-interface": "off",
+        "react/prop-types": "off"
     }
 }

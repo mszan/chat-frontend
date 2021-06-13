@@ -10,11 +10,11 @@ import classes from './JoinRoom.module.scss';
 interface Props {}
 
 const JoinRoom: React.FC<Props> = () => {
-    let history = useHistory();
+    const history = useHistory();
     const [form] = Form.useForm();
 
     // A custom hook that builds on useLocation to parse the query string.
-    let queryString = new URLSearchParams(useLocation().search);
+    const queryString = new URLSearchParams(useLocation().search);
 
     // Invite key string. Initial value checks for query string parameter 'key'.
     const [inviteKey, setInviteKey] = useState<string | null>(queryString.get('key'));
@@ -22,9 +22,9 @@ const JoinRoom: React.FC<Props> = () => {
     /**
      * Gets called when form is submitted successfully.
      */
-    const onFormFinish = (values: any) => {
+    const onFormFinish = (values: {inviteKey: string}) => {
         setInviteKey(values.inviteKey);
-    }
+    };
 
     /**
      * Sends invite key to backend API that handles joining user to specific room.
@@ -45,14 +45,14 @@ const JoinRoom: React.FC<Props> = () => {
                 });
                 setInviteKey(null);
                 form.resetFields();
-            })
-    }
+            });
+    };
 
     useEffect(() => {
         if (inviteKey) {
             sendInviteKey();
         }
-    }, [inviteKey])
+    }, [inviteKey]);
 
     return (
         <React.Fragment>
@@ -84,7 +84,7 @@ const JoinRoom: React.FC<Props> = () => {
                 </Col>
             </Row>
         </React.Fragment>
-    )
-}
+    );
+};
 
 export default JoinRoom;

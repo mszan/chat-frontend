@@ -7,7 +7,7 @@ import {isLoggedIn} from 'axios-jwt';
 import {message} from 'antd';
 import './App.scss';
 
-type Props = {}
+interface Props {}
 
 // Entry component.
 const App: React.FC<Props> = () => (
@@ -39,6 +39,7 @@ const App: React.FC<Props> = () => (
 
 );
 
+
 interface IRouteWrapper {
     component: React.ComponentType, // Component to be wrapped.
     title: string,                  // Component title.
@@ -49,7 +50,7 @@ interface IRouteWrapper {
 }
 
 // Used to determinate access to authenticated-only pages.
-const RouteWrapper: React.FC<IRouteWrapper> = ({component: Component, title, loginRequired, navKey}) => {
+const RouteWrapper: React.FC<IRouteWrapper> = ({component: Component, loginRequired}) => {
     const history = useHistory();
     const location = useLocation();
 

@@ -4,15 +4,15 @@ import React, {useState} from 'react';
 import {login} from '../../../../services/auth';
 import {useHistory} from 'react-router-dom';
 
-type Props = {}
+interface Props {}
 
 const LoginForm: React.FC<Props> = () => {
     // Login button loading state.
     const [buttonLoading, setButtonLoading] = useState<boolean>(false);
 
-    let history = useHistory();
+    const history = useHistory();
     // Handles login form onFinish.
-    const onFinish = (values: any) => {
+    const onFinish = (values: {username: string, password: string}) => {
         setButtonLoading(true);
 
         login({

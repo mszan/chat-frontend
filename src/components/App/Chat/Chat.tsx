@@ -15,12 +15,13 @@ export type IRoomOnSider = {
 
 interface Props {}
 
+
 const Chat: React.FC<Props> = () => {
     // Get sider collapse state from localStorage.
     const getSiderCollapsedLocalStorage = () => {
         const localStorageVal = localStorage.getItem('siderCollapsed');
         return !!(localStorageVal && localStorageVal === 'true');
-    }
+    };
 
     // State of collapsed sider.
     const [siderCollapsedState, setSiderCollapseState] = useState<boolean>(getSiderCollapsedLocalStorage());
@@ -30,7 +31,7 @@ const Chat: React.FC<Props> = () => {
         const negation = !getSiderCollapsedLocalStorage();
         localStorage.setItem('siderCollapsed', String(negation));
         setSiderCollapseState(negation);
-    }
+    };
 
     // List of fetched rooms to be displayed on the sidebar.
     const [roomList, setRoomList] = useState<Array<IRoomOnSider>>([]);
@@ -43,7 +44,7 @@ const Chat: React.FC<Props> = () => {
                 <ChatContent roomList={roomList} setRoomList={setRoomList} />
             </Layout>
         </Layout>
-    )
-}
+    );
+};
 
 export default Chat;

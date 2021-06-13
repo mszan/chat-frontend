@@ -18,7 +18,7 @@ interface Props {
 
 const Message: React.FC<Props> = ({renderAvatar, msg}) => {
     // Return true if message user matches loggedUserUsername localStorage string.
-    const isMsgSentByLoggedUser = () => { return msg.user === localStorage.getItem('loggedUserUsername');}
+    const isMsgSentByLoggedUser = () => { return msg.user === localStorage.getItem('loggedUserUsername');};
 
     // Get user avatar (profile picture) or span placeholder.
     const getAvatar = () => {
@@ -31,15 +31,15 @@ const Message: React.FC<Props> = ({renderAvatar, msg}) => {
                         </Avatar>
                     </Tooltip>
                 </Col>
-            )
+            );
         } else {
             return (
                 <Col>
                     <div/>
                 </Col>
-            )
+            );
         }
-    }
+    };
 
     return (
         <Row align="bottom" justify={isMsgSentByLoggedUser() ? 'end' : 'start'}>
@@ -57,8 +57,8 @@ const Message: React.FC<Props> = ({renderAvatar, msg}) => {
             </Col>
             {isMsgSentByLoggedUser() ? getAvatar() : null}
         </Row>
-    )
-}
+    );
+};
 
 export default Message;
 export type {TMessage};

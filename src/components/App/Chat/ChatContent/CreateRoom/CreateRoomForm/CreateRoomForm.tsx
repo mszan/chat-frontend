@@ -11,12 +11,12 @@ type Props = {
 }
 
 const CreateRoomForm: React.FC<Props> = ({roomList, setRoomList}) => {
-    let history = useHistory();
+    const history = useHistory();
 
     // Login button loading state.
     const [buttonLoading, setButtonLoading] = useState<boolean>(false);
 
-    const onFinish = (values: any) => {
+    const onFinish = (values: {name: string}) => {
         setButtonLoading(true);
 
         axiosBackend.post('/rooms/', {
@@ -36,7 +36,7 @@ const CreateRoomForm: React.FC<Props> = ({roomList, setRoomList}) => {
                     creator: r.data.creator,
                     admins: r.data.admins,
                     users: r.data.users,
-                }
+                };
                 setRoomList([...roomList, newRoom]);
             })
             .catch(e => {

@@ -1,19 +1,20 @@
-import { Button, Checkbox, Form, Input, message } from 'antd'
-import { LockOutlined, UserOutlined, MailOutlined } from '@ant-design/icons'
-import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
-import { login, register } from '../../../../services/auth'
+import { Button, Checkbox, Form, Input, message } from 'antd';
+import { LockOutlined, UserOutlined, MailOutlined } from '@ant-design/icons';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { login, register } from '../../../../services/auth';
 
-type Props = {}
+interface Props {}
 
 const RegistrationForm: React.FC<Props> = () => {
   // Register button loading state.
-  const [buttonLoading, setButtonLoading] = useState<boolean>(false)
+  const [buttonLoading, setButtonLoading] = useState<boolean>(false);
 
-  let history = useHistory()
+  const history = useHistory();
   // Handles register form onFinish.
-  const onFinish = (values: any) => {
-    setButtonLoading(true)
+  const onFinish = (values: {username: string, password1: string, password2: string, email: string, agreement: boolean}) => {
+    console.log(values);
+    setButtonLoading(true);
 
     register({
       username: values.username,
@@ -29,19 +30,19 @@ const RegistrationForm: React.FC<Props> = () => {
             .then(() => {
                 message.success(
                     'Account created successfully. You just got logged in.',
-                )
+                );
                 history.push('/chat');
             })
             .catch(() => {
                 message.error('We could not log you in directly after account creation. Try logging in manually.');
-            })
+            });
       })
       .catch((e) => {
-        message.error('Something went wrong, try again.')
-        console.error(e)
-        setTimeout(() => setButtonLoading(false), 1000)
+        message.error('Something went wrong, try again.');
+        console.error(e);
+        setTimeout(() => setButtonLoading(false), 1000);
       });
-  }
+  };
 
   return (
     <Form
@@ -97,11 +98,11 @@ const RegistrationForm: React.FC<Props> = () => {
           ({ getFieldValue }) => ({
             validator(_, value) {
               if (!value || getFieldValue('password1') === value) {
-                return Promise.resolve()
+                return Promise.resolve();
               }
               return Promise.reject(
                 new Error('Passwords do not match.'),
-              )
+              );
             },
           }),
         ]}
@@ -153,7 +154,7 @@ const RegistrationForm: React.FC<Props> = () => {
         </Button>
       </Form.Item>
     </Form>
-  )
-}
+  );
+};
 
-export default RegistrationForm
+export default RegistrationForm;

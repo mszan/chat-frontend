@@ -29,7 +29,7 @@ const Welcome: React.FC<Props> = () => {
                 GitHub
             </Link>
         </React.Fragment>
-    )
-}
+    );
+};
 
 export default Welcome;

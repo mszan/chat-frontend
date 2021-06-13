@@ -4,7 +4,7 @@ import Icon from '@ant-design/icons';
 import classes from './Logo.module.scss';
 import {Col, Row} from 'antd';
 
-type Props = {}
+interface Props {}
 
 const Logo: React.FC<Props> = () => {
     const CustomCoffeeSvg = () => (

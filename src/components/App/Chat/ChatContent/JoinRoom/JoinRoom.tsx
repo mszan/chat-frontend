@@ -39,7 +39,6 @@ const JoinRoom: React.FC<Props> = () => {
                 history.push(`/chat/rooms/${r.data.room_id}`);
             })
             .catch(e => {
-                console.log(e.response.data)
                 message.error({
                     content: <span>Unable to join room ID. <strong>{e.response.data.msg}</strong></span>,
                     duration: 5
